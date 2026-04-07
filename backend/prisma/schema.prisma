@@ -1,0 +1,151 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/database/generated/prisma"
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+
+model User {
+  id String @id @default(uuid())
+  email String @unique @db.VarChar(320)
+  password_hash String @db.VarChar(64)
+  is_2fa_auth Boolean @default(false)
+  created_at DateTime @default(now())
+  deleted_at DateTime?
+
+  subscriptions Subscription[]
+  tokens TokenRefresh[]
+  notifications Notification[]
+
+  @@map("user")
+}
+
+model TokenRefresh{
+  id String @id @default(uuid())
+  user_id String
+  token_hash String @db.VarChar(64)
+
+  user User @relation(fields: [user_id], references: [id])
+  
+  @@index([user_id])
+
+  @@map("token_refresh")
+}
+
+model Notification{
+  id String @id @default(uuid())
+  user_id String
+  subscription_id String?
+  message String @db.VarChar(250)
+  status StatusNotification @default(SENT)
+  created_at DateTime @default(now())
+  deleted_at DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
+  subscription Subscription? @relation(fields: [subscription_id], references: [id])
+  
+  @@index([user_id])
+  @@index([user_id, status])
+
+  @@map("notification")
+}
+
+model Subscription {
+  id String @id @default(uuid())
+  user_id String 
+  name String @db.VarChar(100)
+  amount Decimal @default(0) @db.Decimal(10,2)
+  status StatusSubscription @default(TRIAL)
+  last_payment_at DateTime
+  period Period @default(MONTH)
+  count Int @default(1)
+  ahead_payment_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
+  notifications Notification[]
+  categories SubscriptionCategory[]
+  payments Payment[]
+
+  @@index([user_id])
+  @@index([user_id, status])
+  @@index([ahead_payment_at])
+
+  @@map("subscription")
+}
+
+model SubscriptionCategory {
+  subscription_id String
+  category Category 
+
+  subscription Subscription @relation(fields: [subscription_id], references: [id])
+  @@id([subscription_id, category])
+  @@map("subscription_category")
+}
+
+model Payment {
+  id String @id @default(uuid())
+  subscription_id String
+  amount Decimal @db.Decimal(10, 2)
+  payment_date DateTime 
+
+  subscription Subscription @relation(fields: [subscription_id], references: [id])
+  
+  @@index([subscription_id])
+  @@index([payment_date])
+
+  @@map("payment")
+}
+
+
+enum StatusSubscription {
+  TRIAL
+  PAID
+  NOT_PAID
+  SUSPENDED
+  DELETED
+}
+
+enum StatusNotification {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+}
+
+enum Period {
+  DAY
+  WEEK
+  MONTH
+  YEAR
+  LIFE
+}
+
+enum Category {
+  CINEMA
+  MUSIC
+  TV
+  GAMING
+  SOFTWARE
+  EDUCATION
+  FITNESS
+  FOOD
+  CLOUD
+  STORAGE
+  NEWS
+  SHOPPING
+  FINANCE
+  TRANSPORT
+  OTHER
+}
