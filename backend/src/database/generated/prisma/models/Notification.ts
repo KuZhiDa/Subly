@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Notification
@@ -407,10 +407,6 @@ export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type EnumStatusNotificationFieldUpdateOperationsInput = {
   set?: $Enums.StatusNotification
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
 }
 
 export type NotificationCreateNestedManyWithoutSubscriptionInput = {
