@@ -10,14 +10,14 @@ export class App {
   private readonly port: number;
   private readonly configService: ConfigService;
   private readonly prefix: string;
-  private readonly url_doc: string;
+  private readonly url_docs: string;
 
   constructor(app: INestApplication) {
     this.app = app;
     this.configService = app.get(ConfigService);
     this.port = this.configService.getOrThrow<number>('PORT');
     this.prefix = this.configService.getOrThrow<string>('PREFIX_APP');
-    this.url_doc = this.configService.getOrThrow<string>('URL_DOC');
+    this.url_docs = this.configService.getOrThrow<string>('URL_DOCS');
   }
 
   private appConfig() {
@@ -35,7 +35,7 @@ export class App {
       .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(this.app, option);
-    SwaggerModule.setup(`${this.prefix}/${this.url_doc}`, this.app, document, {
+    SwaggerModule.setup(`${this.prefix}/${this.url_docs}`, this.app, document, {
       swaggerOptions: {
         persistAuthorization: true,
         displayRequestDuration: true,

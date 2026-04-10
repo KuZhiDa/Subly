@@ -8,10 +8,10 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User.js'
-export type * from './models/TokenRefresh.js'
-export type * from './models/Notification.js'
-export type * from './models/Subscription.js'
-export type * from './models/SubscriptionCategory.js'
-export type * from './models/Payment.js'
-export type * from './commonInputTypes.js'
+export type * from './models/User'
+export type * from './models/TokenRefresh'
+export type * from './models/Notification'
+export type * from './models/Subscription'
+export type * from './models/SubscriptionCategory'
+export type * from './models/Payment'
+export type * from './commonInputTypes'

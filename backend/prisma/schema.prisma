@@ -17,7 +17,7 @@ datasource db {
 model User {
   id String @id @default(uuid())
   email String @unique @db.VarChar(320)
-  password_hash String @db.VarChar(64)
+  password_hash String? @db.VarChar(64)
   is_2fa_auth Boolean @default(false)
   created_at DateTime @default(now())
   deleted_at DateTime?
@@ -30,12 +30,13 @@ model User {
 }
 
 model TokenRefresh{
-  id String @id @default(uuid())
   user_id String
   token_hash String @db.VarChar(64)
 
   user User @relation(fields: [user_id], references: [id])
-  
+
+  @@id([user_id, token_hash])
+
   @@index([user_id])
 
   @@map("token_refresh")
