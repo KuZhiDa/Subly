@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 
 export class App {
   private readonly app: INestApplication;
@@ -24,6 +25,7 @@ export class App {
     this.app.useGlobalPipes(
       new ValidationPipe({ transform: true, whitelist: true }),
     );
+    this.app.use(cookieParser());
     return this;
   }
 
