@@ -119,10 +119,6 @@ export class AuthService implements IAuthService {
   }
 
   async checkRefreshToken(token: string) {
-    if (!token) {
-      throw new UnauthorizedException('В куках нет токена.');
-    }
-
     const { id, email } = await this.secretService.decodeToken(token);
 
     const tokenHash = await this.secretService.hashToken(token);
