@@ -25,17 +25,19 @@ model User {
   subscriptions Subscription[]
   tokens TokenRefresh[]
   notifications Notification[]
+  accounts SubscriptionAccount[]
 
   @@map("user")
 }
 
 model TokenRefresh{
+  id String @id @default(uuid()) 
   user_id String
   token_hash String @db.VarChar(64)
 
   user User @relation(fields: [user_id], references: [id])
 
-  @@id([user_id, token_hash])
+  @@unique([user_id, token_hash])
 
   @@index([user_id])
 
@@ -51,8 +53,8 @@ model Notification{
   created_at DateTime @default(now())
   deleted_at DateTime?
 
-  user User @relation(fields: [user_id], references: [id])
-  subscription Subscription? @relation(fields: [subscription_id], references: [id])
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscription_id], references: [id], onDelete: Cascade)
   
   @@index([user_id])
   @@index([user_id, status])
@@ -63,25 +65,30 @@ model Notification{
 model Subscription {
   id String @id @default(uuid())
   user_id String 
+  account_id String
   name String @db.VarChar(100)
-  amount Decimal @default(0) @db.Decimal(10,2)
-  status StatusSubscription @default(TRIAL)
+  url String? @db.VarChar(2048)
+  next_amount Decimal @db.Decimal(10,2)
+  status StatusSubscription @default(PAID)
   last_payment_at DateTime
-  period Period @default(MONTH)
+  period Period
   count Int @default(1)
-  ahead_payment_at DateTime
+  next_payment_at DateTime?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   deleted_at DateTime?
 
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  account SubscriptionAccount? @relation(fields: [account_id], references: [id])
   notifications Notification[]
   categories SubscriptionCategory[]
   payments Payment[]
 
   @@index([user_id])
   @@index([user_id, status])
-  @@index([ahead_payment_at])
+  @@index([next_payment_at])
+
+  @@unique([user_id, name, account_id])
 
   @@map("subscription")
 }
@@ -90,7 +97,7 @@ model SubscriptionCategory {
   subscription_id String
   category Category 
 
-  subscription Subscription @relation(fields: [subscription_id], references: [id])
+  subscription Subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade)
   @@id([subscription_id, category])
   @@map("subscription_category")
 }
@@ -101,17 +108,32 @@ model Payment {
   amount Decimal @db.Decimal(10, 2)
   payment_date DateTime 
 
-  subscription Subscription @relation(fields: [subscription_id], references: [id])
+  subscription Subscription @relation(fields: [subscription_id], references: [id], onDelete: Cascade)
   
+  @@unique([subscription_id, payment_date])
+
   @@index([subscription_id])
   @@index([payment_date])
 
   @@map("payment")
 }
 
+model SubscriptionAccount {
+  id String @id @default(uuid())
+  user_id String
+  type_login Login
+  login String @db.VarChar(320)
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  subscriptions Subscription[]
+
+  @@unique([user_id, login])
+
+  @@map("subscription_account")
+}
+
 
 enum StatusSubscription {
-  TRIAL
   PAID
   NOT_PAID
   SUSPENDED
@@ -149,4 +171,10 @@ enum Category {
   FINANCE
   TRANSPORT
   OTHER
+}
+
+enum Login {
+  EMAIL
+  PHONE_NUMBER
+  SET_SYMBOL
 }

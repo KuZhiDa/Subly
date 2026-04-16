@@ -389,7 +389,8 @@ export const ModelName = {
   Notification: 'Notification',
   Subscription: 'Subscription',
   SubscriptionCategory: 'SubscriptionCategory',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  SubscriptionAccount: 'SubscriptionAccount'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "tokenRefresh" | "notification" | "subscription" | "subscriptionCategory" | "payment"
+    modelProps: "user" | "tokenRefresh" | "notification" | "subscription" | "subscriptionCategory" | "payment" | "subscriptionAccount"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -853,6 +854,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SubscriptionAccount: {
+      payload: Prisma.$SubscriptionAccountPayload<ExtArgs>
+      fields: Prisma.SubscriptionAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SubscriptionAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SubscriptionAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.SubscriptionAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SubscriptionAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>
+        }
+        findMany: {
+          args: Prisma.SubscriptionAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>[]
+        }
+        create: {
+          args: Prisma.SubscriptionAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>
+        }
+        createMany: {
+          args: Prisma.SubscriptionAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SubscriptionAccountCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>[]
+        }
+        delete: {
+          args: Prisma.SubscriptionAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>
+        }
+        update: {
+          args: Prisma.SubscriptionAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.SubscriptionAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SubscriptionAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SubscriptionAccountUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>[]
+        }
+        upsert: {
+          args: Prisma.SubscriptionAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.SubscriptionAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSubscriptionAccount>
+        }
+        groupBy: {
+          args: Prisma.SubscriptionAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubscriptionAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SubscriptionAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubscriptionAccountCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -905,6 +980,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 
 export const TokenRefreshScalarFieldEnum = {
+  id: 'id',
   user_id: 'user_id',
   token_hash: 'token_hash'
 } as const
@@ -928,13 +1004,15 @@ export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[k
 export const SubscriptionScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
+  account_id: 'account_id',
   name: 'name',
-  amount: 'amount',
+  url: 'url',
+  next_amount: 'next_amount',
   status: 'status',
   last_payment_at: 'last_payment_at',
   period: 'period',
   count: 'count',
-  ahead_payment_at: 'ahead_payment_at',
+  next_payment_at: 'next_payment_at',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -959,6 +1037,16 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const SubscriptionAccountScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  type_login: 'type_login',
+  login: 'login'
+} as const
+
+export type SubscriptionAccountScalarFieldEnum = (typeof SubscriptionAccountScalarFieldEnum)[keyof typeof SubscriptionAccountScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1111,6 +1199,20 @@ export type ListEnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
+ * Reference to a field of type 'Login'
+ */
+export type EnumLoginFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Login'>
+    
+
+
+/**
+ * Reference to a field of type 'Login[]'
+ */
+export type ListEnumLoginFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Login[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1224,6 +1326,7 @@ export type GlobalOmitConfig = {
   subscription?: Prisma.SubscriptionOmit
   subscriptionCategory?: Prisma.SubscriptionCategoryOmit
   payment?: Prisma.PaymentOmit
+  subscriptionAccount?: Prisma.SubscriptionAccountOmit
 }
 
 /* Types for Logging */

@@ -10,7 +10,6 @@
 */
 
 export const StatusSubscription = {
-  TRIAL: 'TRIAL',
   PAID: 'PAID',
   NOT_PAID: 'NOT_PAID',
   SUSPENDED: 'SUSPENDED',
@@ -60,3 +59,12 @@ export const Category = {
 } as const
 
 export type Category = (typeof Category)[keyof typeof Category]
+
+
+export const Login = {
+  EMAIL: 'EMAIL',
+  PHONE_NUMBER: 'PHONE_NUMBER',
+  SET_SYMBOL: 'SET_SYMBOL'
+} as const
+
+export type Login = (typeof Login)[keyof typeof Login]

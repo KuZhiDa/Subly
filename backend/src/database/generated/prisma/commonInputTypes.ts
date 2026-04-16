@@ -270,6 +270,23 @@ export type EnumCategoryWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumCategoryFilter<$PrismaModel>
 }
 
+export type EnumLoginFilter<$PrismaModel = never> = {
+  equals?: $Enums.Login | Prisma.EnumLoginFieldRefInput<$PrismaModel>
+  in?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLoginFilter<$PrismaModel> | $Enums.Login
+}
+
+export type EnumLoginWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Login | Prisma.EnumLoginFieldRefInput<$PrismaModel>
+  in?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLoginWithAggregatesFilter<$PrismaModel> | $Enums.Login
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLoginFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLoginFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -537,6 +554,23 @@ export type NestedEnumCategoryWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCategoryFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCategoryFilter<$PrismaModel>
+}
+
+export type NestedEnumLoginFilter<$PrismaModel = never> = {
+  equals?: $Enums.Login | Prisma.EnumLoginFieldRefInput<$PrismaModel>
+  in?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLoginFilter<$PrismaModel> | $Enums.Login
+}
+
+export type NestedEnumLoginWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Login | Prisma.EnumLoginFieldRefInput<$PrismaModel>
+  in?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Login[] | Prisma.ListEnumLoginFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLoginWithAggregatesFilter<$PrismaModel> | $Enums.Login
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLoginFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLoginFilter<$PrismaModel>
 }
 
 

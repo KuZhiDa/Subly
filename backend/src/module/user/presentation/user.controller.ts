@@ -8,6 +8,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateDto } from './dto/update.dto';
+import { CurrentUser } from 'src/common/decorator/user.decorator';
 
 @ApiTags('Управление пользователем.')
 @Controller('user')
@@ -20,12 +21,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Получение данных пользователя.',
   })
-  @ApiParam({
-    name: 'id',
-    type: String,
-    description: 'id пользователя',
-  })
-  async getOne(@Param('id') id: string) {
+  async getOne(@CurrentUser('id') id: string) {
     return await this.userService.getOne(id);
   }
 
@@ -35,12 +31,7 @@ export class UserController {
   @ApiOperation({
     summary: 'обновление данных пользователя.',
   })
-  @ApiParam({
-    name: 'id',
-    type: String,
-    description: 'id пользователя',
-  })
-  async update(@Param('id') id: string, @Body() dto: UpdateDto) {
+  async update(@CurrentUser('id') id: string, @Body() dto: UpdateDto) {
     return await this.userService.update(id, dto);
   }
 }

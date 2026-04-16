@@ -1,11 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { IUserService } from './user.service.interface';
 import { UpdateDto } from '../presentation/dto/update.dto';
 import { PrismaService } from 'src/database/prisma.service';
+import { SecretService } from 'src/common/service/secret.service';
 
 @Injectable()
 export class UserService implements IUserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private secretService: SecretService,
+  ) {}
 
   async getOne(id: string) {
     const user = await this.prisma.user.findUnique({ where: { id } });
@@ -24,11 +32,17 @@ export class UserService implements IUserService {
     const data: any = {};
 
     if (dto.email) {
+      const user = await this.prisma.user.findFirst({
+        where: { email: dto.email, id: { not: id } },
+      });
+      if (user) {
+        throw new BadRequestException('Пользователь с таким email уже создан.');
+      }
       data.email = dto.email;
     }
 
     if (dto.password) {
-      data.password = dto.password;
+      data.password_hash = await this.secretService.hashPassword(dto.password);
     }
 
     if (dto.is_2fa_auth !== undefined) {
@@ -37,6 +51,11 @@ export class UserService implements IUserService {
 
     await this.getOne(id);
 
-    return this.prisma.user.update({ where: { id: id }, data });
+    const update = await this.prisma.user.update({ where: { id: id }, data });
+
+    return {
+      email: update.email,
+      is_2fa_auth: update.is_2fa_auth,
+    };
   }
 }

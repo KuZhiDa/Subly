@@ -47,3 +47,8 @@ export type SubscriptionCategory = Prisma.SubscriptionCategoryModel
  * 
  */
 export type Payment = Prisma.PaymentModel
+/**
+ * Model SubscriptionAccount
+ * 
+ */
+export type SubscriptionAccount = Prisma.SubscriptionAccountModel

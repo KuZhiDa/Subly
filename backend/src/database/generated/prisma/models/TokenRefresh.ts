@@ -25,16 +25,19 @@ export type AggregateTokenRefresh = {
 }
 
 export type TokenRefreshMinAggregateOutputType = {
+  id: string | null
   user_id: string | null
   token_hash: string | null
 }
 
 export type TokenRefreshMaxAggregateOutputType = {
+  id: string | null
   user_id: string | null
   token_hash: string | null
 }
 
 export type TokenRefreshCountAggregateOutputType = {
+  id: number
   user_id: number
   token_hash: number
   _all: number
@@ -42,16 +45,19 @@ export type TokenRefreshCountAggregateOutputType = {
 
 
 export type TokenRefreshMinAggregateInputType = {
+  id?: true
   user_id?: true
   token_hash?: true
 }
 
 export type TokenRefreshMaxAggregateInputType = {
+  id?: true
   user_id?: true
   token_hash?: true
 }
 
 export type TokenRefreshCountAggregateInputType = {
+  id?: true
   user_id?: true
   token_hash?: true
   _all?: true
@@ -130,6 +136,7 @@ export type TokenRefreshGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 export type TokenRefreshGroupByOutputType = {
+  id: string
   user_id: string
   token_hash: string
   _count: TokenRefreshCountAggregateOutputType | null
@@ -156,18 +163,21 @@ export type TokenRefreshWhereInput = {
   AND?: Prisma.TokenRefreshWhereInput | Prisma.TokenRefreshWhereInput[]
   OR?: Prisma.TokenRefreshWhereInput[]
   NOT?: Prisma.TokenRefreshWhereInput | Prisma.TokenRefreshWhereInput[]
+  id?: Prisma.StringFilter<"TokenRefresh"> | string
   user_id?: Prisma.StringFilter<"TokenRefresh"> | string
   token_hash?: Prisma.StringFilter<"TokenRefresh"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type TokenRefreshOrderByWithRelationInput = {
+  id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   token_hash?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type TokenRefreshWhereUniqueInput = Prisma.AtLeast<{
+  id?: string
   user_id_token_hash?: Prisma.TokenRefreshUser_idToken_hashCompoundUniqueInput
   AND?: Prisma.TokenRefreshWhereInput | Prisma.TokenRefreshWhereInput[]
   OR?: Prisma.TokenRefreshWhereInput[]
@@ -175,9 +185,10 @@ export type TokenRefreshWhereUniqueInput = Prisma.AtLeast<{
   user_id?: Prisma.StringFilter<"TokenRefresh"> | string
   token_hash?: Prisma.StringFilter<"TokenRefresh"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "user_id_token_hash">
+}, "id" | "user_id_token_hash">
 
 export type TokenRefreshOrderByWithAggregationInput = {
+  id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   token_hash?: Prisma.SortOrder
   _count?: Prisma.TokenRefreshCountOrderByAggregateInput
@@ -189,40 +200,48 @@ export type TokenRefreshScalarWhereWithAggregatesInput = {
   AND?: Prisma.TokenRefreshScalarWhereWithAggregatesInput | Prisma.TokenRefreshScalarWhereWithAggregatesInput[]
   OR?: Prisma.TokenRefreshScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TokenRefreshScalarWhereWithAggregatesInput | Prisma.TokenRefreshScalarWhereWithAggregatesInput[]
+  id?: Prisma.StringWithAggregatesFilter<"TokenRefresh"> | string
   user_id?: Prisma.StringWithAggregatesFilter<"TokenRefresh"> | string
   token_hash?: Prisma.StringWithAggregatesFilter<"TokenRefresh"> | string
 }
 
 export type TokenRefreshCreateInput = {
+  id?: string
   token_hash: string
   user: Prisma.UserCreateNestedOneWithoutTokensInput
 }
 
 export type TokenRefreshUncheckedCreateInput = {
+  id?: string
   user_id: string
   token_hash: string
 }
 
 export type TokenRefreshUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_hash?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutTokensNestedInput
 }
 
 export type TokenRefreshUncheckedUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_hash?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TokenRefreshCreateManyInput = {
+  id?: string
   user_id: string
   token_hash: string
 }
 
 export type TokenRefreshUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_hash?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TokenRefreshUncheckedUpdateManyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_hash?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -243,16 +262,19 @@ export type TokenRefreshUser_idToken_hashCompoundUniqueInput = {
 }
 
 export type TokenRefreshCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   token_hash?: Prisma.SortOrder
 }
 
 export type TokenRefreshMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   token_hash?: Prisma.SortOrder
 }
 
 export type TokenRefreshMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   token_hash?: Prisma.SortOrder
 }
@@ -300,10 +322,12 @@ export type TokenRefreshUncheckedUpdateManyWithoutUserNestedInput = {
 }
 
 export type TokenRefreshCreateWithoutUserInput = {
+  id?: string
   token_hash: string
 }
 
 export type TokenRefreshUncheckedCreateWithoutUserInput = {
+  id?: string
   token_hash: string
 }
 
@@ -337,52 +361,61 @@ export type TokenRefreshScalarWhereInput = {
   AND?: Prisma.TokenRefreshScalarWhereInput | Prisma.TokenRefreshScalarWhereInput[]
   OR?: Prisma.TokenRefreshScalarWhereInput[]
   NOT?: Prisma.TokenRefreshScalarWhereInput | Prisma.TokenRefreshScalarWhereInput[]
+  id?: Prisma.StringFilter<"TokenRefresh"> | string
   user_id?: Prisma.StringFilter<"TokenRefresh"> | string
   token_hash?: Prisma.StringFilter<"TokenRefresh"> | string
 }
 
 export type TokenRefreshCreateManyUserInput = {
+  id?: string
   token_hash: string
 }
 
 export type TokenRefreshUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_hash?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TokenRefreshUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_hash?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TokenRefreshUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_hash?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
 
 export type TokenRefreshSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   user_id?: boolean
   token_hash?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tokenRefresh"]>
 
 export type TokenRefreshSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   user_id?: boolean
   token_hash?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tokenRefresh"]>
 
 export type TokenRefreshSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   user_id?: boolean
   token_hash?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tokenRefresh"]>
 
 export type TokenRefreshSelectScalar = {
+  id?: boolean
   user_id?: boolean
   token_hash?: boolean
 }
 
-export type TokenRefreshOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"user_id" | "token_hash", ExtArgs["result"]["tokenRefresh"]>
+export type TokenRefreshOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "token_hash", ExtArgs["result"]["tokenRefresh"]>
 export type TokenRefreshInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -399,6 +432,7 @@ export type $TokenRefreshPayload<ExtArgs extends runtime.Types.Extensions.Intern
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    id: string
     user_id: string
     token_hash: string
   }, ExtArgs["result"]["tokenRefresh"]>
@@ -484,8 +518,8 @@ export interface TokenRefreshDelegate<ExtArgs extends runtime.Types.Extensions.I
    * // Get first 10 TokenRefreshes
    * const tokenRefreshes = await prisma.tokenRefresh.findMany({ take: 10 })
    * 
-   * // Only select the `user_id`
-   * const tokenRefreshWithUser_idOnly = await prisma.tokenRefresh.findMany({ select: { user_id: true } })
+   * // Only select the `id`
+   * const tokenRefreshWithIdOnly = await prisma.tokenRefresh.findMany({ select: { id: true } })
    * 
    */
   findMany<T extends TokenRefreshFindManyArgs>(args?: Prisma.SelectSubset<T, TokenRefreshFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TokenRefreshPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -529,9 +563,9 @@ export interface TokenRefreshDelegate<ExtArgs extends runtime.Types.Extensions.I
    *   ]
    * })
    * 
-   * // Create many TokenRefreshes and only return the `user_id`
-   * const tokenRefreshWithUser_idOnly = await prisma.tokenRefresh.createManyAndReturn({
-   *   select: { user_id: true },
+   * // Create many TokenRefreshes and only return the `id`
+   * const tokenRefreshWithIdOnly = await prisma.tokenRefresh.createManyAndReturn({
+   *   select: { id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -620,9 +654,9 @@ export interface TokenRefreshDelegate<ExtArgs extends runtime.Types.Extensions.I
    *   ]
    * })
    * 
-   * // Update zero or more TokenRefreshes and only return the `user_id`
-   * const tokenRefreshWithUser_idOnly = await prisma.tokenRefresh.updateManyAndReturn({
-   *   select: { user_id: true },
+   * // Update zero or more TokenRefreshes and only return the `id`
+   * const tokenRefreshWithIdOnly = await prisma.tokenRefresh.updateManyAndReturn({
+   *   select: { id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -825,6 +859,7 @@ export interface Prisma__TokenRefreshClient<T, Null = never, ExtArgs extends run
  * Fields of the TokenRefresh model
  */
 export interface TokenRefreshFieldRefs {
+  readonly id: Prisma.FieldRef<"TokenRefresh", 'String'>
   readonly user_id: Prisma.FieldRef<"TokenRefresh", 'String'>
   readonly token_hash: Prisma.FieldRef<"TokenRefresh", 'String'>
 }

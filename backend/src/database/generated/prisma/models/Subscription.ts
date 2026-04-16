@@ -27,25 +27,27 @@ export type AggregateSubscription = {
 }
 
 export type SubscriptionAvgAggregateOutputType = {
-  amount: runtime.Decimal | null
+  next_amount: runtime.Decimal | null
   count: number | null
 }
 
 export type SubscriptionSumAggregateOutputType = {
-  amount: runtime.Decimal | null
+  next_amount: runtime.Decimal | null
   count: number | null
 }
 
 export type SubscriptionMinAggregateOutputType = {
   id: string | null
   user_id: string | null
+  account_id: string | null
   name: string | null
-  amount: runtime.Decimal | null
+  url: string | null
+  next_amount: runtime.Decimal | null
   status: $Enums.StatusSubscription | null
   last_payment_at: Date | null
   period: $Enums.Period | null
   count: number | null
-  ahead_payment_at: Date | null
+  next_payment_at: Date | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -54,13 +56,15 @@ export type SubscriptionMinAggregateOutputType = {
 export type SubscriptionMaxAggregateOutputType = {
   id: string | null
   user_id: string | null
+  account_id: string | null
   name: string | null
-  amount: runtime.Decimal | null
+  url: string | null
+  next_amount: runtime.Decimal | null
   status: $Enums.StatusSubscription | null
   last_payment_at: Date | null
   period: $Enums.Period | null
   count: number | null
-  ahead_payment_at: Date | null
+  next_payment_at: Date | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -69,13 +73,15 @@ export type SubscriptionMaxAggregateOutputType = {
 export type SubscriptionCountAggregateOutputType = {
   id: number
   user_id: number
+  account_id: number
   name: number
-  amount: number
+  url: number
+  next_amount: number
   status: number
   last_payment_at: number
   period: number
   count: number
-  ahead_payment_at: number
+  next_payment_at: number
   created_at: number
   updated_at: number
   deleted_at: number
@@ -84,25 +90,27 @@ export type SubscriptionCountAggregateOutputType = {
 
 
 export type SubscriptionAvgAggregateInputType = {
-  amount?: true
+  next_amount?: true
   count?: true
 }
 
 export type SubscriptionSumAggregateInputType = {
-  amount?: true
+  next_amount?: true
   count?: true
 }
 
 export type SubscriptionMinAggregateInputType = {
   id?: true
   user_id?: true
+  account_id?: true
   name?: true
-  amount?: true
+  url?: true
+  next_amount?: true
   status?: true
   last_payment_at?: true
   period?: true
   count?: true
-  ahead_payment_at?: true
+  next_payment_at?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -111,13 +119,15 @@ export type SubscriptionMinAggregateInputType = {
 export type SubscriptionMaxAggregateInputType = {
   id?: true
   user_id?: true
+  account_id?: true
   name?: true
-  amount?: true
+  url?: true
+  next_amount?: true
   status?: true
   last_payment_at?: true
   period?: true
   count?: true
-  ahead_payment_at?: true
+  next_payment_at?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -126,13 +136,15 @@ export type SubscriptionMaxAggregateInputType = {
 export type SubscriptionCountAggregateInputType = {
   id?: true
   user_id?: true
+  account_id?: true
   name?: true
-  amount?: true
+  url?: true
+  next_amount?: true
   status?: true
   last_payment_at?: true
   period?: true
   count?: true
-  ahead_payment_at?: true
+  next_payment_at?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -228,13 +240,15 @@ export type SubscriptionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type SubscriptionGroupByOutputType = {
   id: string
   user_id: string
+  account_id: string
   name: string
-  amount: runtime.Decimal
+  url: string | null
+  next_amount: runtime.Decimal
   status: $Enums.StatusSubscription
   last_payment_at: Date
   period: $Enums.Period
   count: number
-  ahead_payment_at: Date
+  next_payment_at: Date | null
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
@@ -266,17 +280,20 @@ export type SubscriptionWhereInput = {
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   id?: Prisma.StringFilter<"Subscription"> | string
   user_id?: Prisma.StringFilter<"Subscription"> | string
+  account_id?: Prisma.StringFilter<"Subscription"> | string
   name?: Prisma.StringFilter<"Subscription"> | string
-  amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  next_amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFilter<"Subscription"> | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   period?: Prisma.EnumPeriodFilter<"Subscription"> | $Enums.Period
   count?: Prisma.IntFilter<"Subscription"> | number
-  ahead_payment_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
+  next_payment_at?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  account?: Prisma.XOR<Prisma.SubscriptionAccountNullableScalarRelationFilter, Prisma.SubscriptionAccountWhereInput> | null
   notifications?: Prisma.NotificationListRelationFilter
   categories?: Prisma.SubscriptionCategoryListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
@@ -285,17 +302,20 @@ export type SubscriptionWhereInput = {
 export type SubscriptionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
+  account_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  url?: Prisma.SortOrderInput | Prisma.SortOrder
+  next_amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   last_payment_at?: Prisma.SortOrder
   period?: Prisma.SortOrder
   count?: Prisma.SortOrder
-  ahead_payment_at?: Prisma.SortOrder
+  next_payment_at?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  account?: Prisma.SubscriptionAccountOrderByWithRelationInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   categories?: Prisma.SubscriptionCategoryOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
@@ -303,36 +323,42 @@ export type SubscriptionOrderByWithRelationInput = {
 
 export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  user_id_name_account_id?: Prisma.SubscriptionUser_idNameAccount_idCompoundUniqueInput
   AND?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   user_id?: Prisma.StringFilter<"Subscription"> | string
+  account_id?: Prisma.StringFilter<"Subscription"> | string
   name?: Prisma.StringFilter<"Subscription"> | string
-  amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  next_amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFilter<"Subscription"> | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   period?: Prisma.EnumPeriodFilter<"Subscription"> | $Enums.Period
   count?: Prisma.IntFilter<"Subscription"> | number
-  ahead_payment_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
+  next_payment_at?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  account?: Prisma.XOR<Prisma.SubscriptionAccountNullableScalarRelationFilter, Prisma.SubscriptionAccountWhereInput> | null
   notifications?: Prisma.NotificationListRelationFilter
   categories?: Prisma.SubscriptionCategoryListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
-}, "id">
+}, "id" | "user_id_name_account_id">
 
 export type SubscriptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
+  account_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  url?: Prisma.SortOrderInput | Prisma.SortOrder
+  next_amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   last_payment_at?: Prisma.SortOrder
   period?: Prisma.SortOrder
   count?: Prisma.SortOrder
-  ahead_payment_at?: Prisma.SortOrder
+  next_payment_at?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -349,13 +375,15 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SubscriptionScalarWhereWithAggregatesInput | Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   user_id?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
+  account_id?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   name?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
-  amount?: Prisma.DecimalWithAggregatesFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.StringNullableWithAggregatesFilter<"Subscription"> | string | null
+  next_amount?: Prisma.DecimalWithAggregatesFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionWithAggregatesFilter<"Subscription"> | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   period?: Prisma.EnumPeriodWithAggregatesFilter<"Subscription"> | $Enums.Period
   count?: Prisma.IntWithAggregatesFilter<"Subscription"> | number
-  ahead_payment_at?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+  next_payment_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
@@ -364,16 +392,18 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
 export type SubscriptionCreateInput = {
   id?: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
+  account?: Prisma.SubscriptionAccountCreateNestedOneWithoutSubscriptionsInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutSubscriptionInput
   categories?: Prisma.SubscriptionCategoryCreateNestedManyWithoutSubscriptionInput
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
@@ -382,13 +412,15 @@ export type SubscriptionCreateInput = {
 export type SubscriptionUncheckedCreateInput = {
   id?: string
   user_id: string
+  account_id: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -400,16 +432,18 @@ export type SubscriptionUncheckedCreateInput = {
 export type SubscriptionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+  account?: Prisma.SubscriptionAccountUpdateOneWithoutSubscriptionsNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutSubscriptionNestedInput
   categories?: Prisma.SubscriptionCategoryUpdateManyWithoutSubscriptionNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
@@ -418,13 +452,15 @@ export type SubscriptionUpdateInput = {
 export type SubscriptionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  account_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -436,13 +472,15 @@ export type SubscriptionUncheckedUpdateInput = {
 export type SubscriptionCreateManyInput = {
   id?: string
   user_id: string
+  account_id: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -451,12 +489,13 @@ export type SubscriptionCreateManyInput = {
 export type SubscriptionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -465,13 +504,15 @@ export type SubscriptionUpdateManyMutationInput = {
 export type SubscriptionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  account_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -492,36 +533,46 @@ export type SubscriptionNullableScalarRelationFilter = {
   isNot?: Prisma.SubscriptionWhereInput | null
 }
 
+export type SubscriptionUser_idNameAccount_idCompoundUniqueInput = {
+  user_id: string
+  name: string
+  account_id: string
+}
+
 export type SubscriptionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
+  account_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  url?: Prisma.SortOrder
+  next_amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   last_payment_at?: Prisma.SortOrder
   period?: Prisma.SortOrder
   count?: Prisma.SortOrder
-  ahead_payment_at?: Prisma.SortOrder
+  next_payment_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
 }
 
 export type SubscriptionAvgOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
+  next_amount?: Prisma.SortOrder
   count?: Prisma.SortOrder
 }
 
 export type SubscriptionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
+  account_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  url?: Prisma.SortOrder
+  next_amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   last_payment_at?: Prisma.SortOrder
   period?: Prisma.SortOrder
   count?: Prisma.SortOrder
-  ahead_payment_at?: Prisma.SortOrder
+  next_payment_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -530,20 +581,22 @@ export type SubscriptionMaxOrderByAggregateInput = {
 export type SubscriptionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
+  account_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  url?: Prisma.SortOrder
+  next_amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   last_payment_at?: Prisma.SortOrder
   period?: Prisma.SortOrder
   count?: Prisma.SortOrder
-  ahead_payment_at?: Prisma.SortOrder
+  next_payment_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
 }
 
 export type SubscriptionSumOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
+  next_amount?: Prisma.SortOrder
   count?: Prisma.SortOrder
 }
 
@@ -662,18 +715,62 @@ export type SubscriptionUpdateOneRequiredWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionUpdateToOneWithWhereWithoutPaymentsInput, Prisma.SubscriptionUpdateWithoutPaymentsInput>, Prisma.SubscriptionUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type SubscriptionCreateNestedManyWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutAccountInput, Prisma.SubscriptionUncheckedCreateWithoutAccountInput> | Prisma.SubscriptionCreateWithoutAccountInput[] | Prisma.SubscriptionUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutAccountInput | Prisma.SubscriptionCreateOrConnectWithoutAccountInput[]
+  createMany?: Prisma.SubscriptionCreateManyAccountInputEnvelope
+  connect?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+}
+
+export type SubscriptionUncheckedCreateNestedManyWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutAccountInput, Prisma.SubscriptionUncheckedCreateWithoutAccountInput> | Prisma.SubscriptionCreateWithoutAccountInput[] | Prisma.SubscriptionUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutAccountInput | Prisma.SubscriptionCreateOrConnectWithoutAccountInput[]
+  createMany?: Prisma.SubscriptionCreateManyAccountInputEnvelope
+  connect?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+}
+
+export type SubscriptionUpdateManyWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutAccountInput, Prisma.SubscriptionUncheckedCreateWithoutAccountInput> | Prisma.SubscriptionCreateWithoutAccountInput[] | Prisma.SubscriptionUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutAccountInput | Prisma.SubscriptionCreateOrConnectWithoutAccountInput[]
+  upsert?: Prisma.SubscriptionUpsertWithWhereUniqueWithoutAccountInput | Prisma.SubscriptionUpsertWithWhereUniqueWithoutAccountInput[]
+  createMany?: Prisma.SubscriptionCreateManyAccountInputEnvelope
+  set?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  disconnect?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  delete?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  connect?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  update?: Prisma.SubscriptionUpdateWithWhereUniqueWithoutAccountInput | Prisma.SubscriptionUpdateWithWhereUniqueWithoutAccountInput[]
+  updateMany?: Prisma.SubscriptionUpdateManyWithWhereWithoutAccountInput | Prisma.SubscriptionUpdateManyWithWhereWithoutAccountInput[]
+  deleteMany?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
+}
+
+export type SubscriptionUncheckedUpdateManyWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutAccountInput, Prisma.SubscriptionUncheckedCreateWithoutAccountInput> | Prisma.SubscriptionCreateWithoutAccountInput[] | Prisma.SubscriptionUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutAccountInput | Prisma.SubscriptionCreateOrConnectWithoutAccountInput[]
+  upsert?: Prisma.SubscriptionUpsertWithWhereUniqueWithoutAccountInput | Prisma.SubscriptionUpsertWithWhereUniqueWithoutAccountInput[]
+  createMany?: Prisma.SubscriptionCreateManyAccountInputEnvelope
+  set?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  disconnect?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  delete?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  connect?: Prisma.SubscriptionWhereUniqueInput | Prisma.SubscriptionWhereUniqueInput[]
+  update?: Prisma.SubscriptionUpdateWithWhereUniqueWithoutAccountInput | Prisma.SubscriptionUpdateWithWhereUniqueWithoutAccountInput[]
+  updateMany?: Prisma.SubscriptionUpdateManyWithWhereWithoutAccountInput | Prisma.SubscriptionUpdateManyWithWhereWithoutAccountInput[]
+  deleteMany?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
+}
+
 export type SubscriptionCreateWithoutUserInput = {
   id?: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  account?: Prisma.SubscriptionAccountCreateNestedOneWithoutSubscriptionsInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutSubscriptionInput
   categories?: Prisma.SubscriptionCategoryCreateNestedManyWithoutSubscriptionInput
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
@@ -681,13 +778,15 @@ export type SubscriptionCreateWithoutUserInput = {
 
 export type SubscriptionUncheckedCreateWithoutUserInput = {
   id?: string
+  account_id: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -728,13 +827,15 @@ export type SubscriptionScalarWhereInput = {
   NOT?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
   id?: Prisma.StringFilter<"Subscription"> | string
   user_id?: Prisma.StringFilter<"Subscription"> | string
+  account_id?: Prisma.StringFilter<"Subscription"> | string
   name?: Prisma.StringFilter<"Subscription"> | string
-  amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.StringNullableFilter<"Subscription"> | string | null
+  next_amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFilter<"Subscription"> | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   period?: Prisma.EnumPeriodFilter<"Subscription"> | $Enums.Period
   count?: Prisma.IntFilter<"Subscription"> | number
-  ahead_payment_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
+  next_payment_at?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -743,16 +844,18 @@ export type SubscriptionScalarWhereInput = {
 export type SubscriptionCreateWithoutNotificationsInput = {
   id?: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
+  account?: Prisma.SubscriptionAccountCreateNestedOneWithoutSubscriptionsInput
   categories?: Prisma.SubscriptionCategoryCreateNestedManyWithoutSubscriptionInput
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
 }
@@ -760,13 +863,15 @@ export type SubscriptionCreateWithoutNotificationsInput = {
 export type SubscriptionUncheckedCreateWithoutNotificationsInput = {
   id?: string
   user_id: string
+  account_id: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -793,16 +898,18 @@ export type SubscriptionUpdateToOneWithWhereWithoutNotificationsInput = {
 export type SubscriptionUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+  account?: Prisma.SubscriptionAccountUpdateOneWithoutSubscriptionsNestedInput
   categories?: Prisma.SubscriptionCategoryUpdateManyWithoutSubscriptionNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
 }
@@ -810,13 +917,15 @@ export type SubscriptionUpdateWithoutNotificationsInput = {
 export type SubscriptionUncheckedUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  account_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -827,16 +936,18 @@ export type SubscriptionUncheckedUpdateWithoutNotificationsInput = {
 export type SubscriptionCreateWithoutCategoriesInput = {
   id?: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
+  account?: Prisma.SubscriptionAccountCreateNestedOneWithoutSubscriptionsInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutSubscriptionInput
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
 }
@@ -844,13 +955,15 @@ export type SubscriptionCreateWithoutCategoriesInput = {
 export type SubscriptionUncheckedCreateWithoutCategoriesInput = {
   id?: string
   user_id: string
+  account_id: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -877,16 +990,18 @@ export type SubscriptionUpdateToOneWithWhereWithoutCategoriesInput = {
 export type SubscriptionUpdateWithoutCategoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+  account?: Prisma.SubscriptionAccountUpdateOneWithoutSubscriptionsNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutSubscriptionNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
 }
@@ -894,13 +1009,15 @@ export type SubscriptionUpdateWithoutCategoriesInput = {
 export type SubscriptionUncheckedUpdateWithoutCategoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  account_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -911,16 +1028,18 @@ export type SubscriptionUncheckedUpdateWithoutCategoriesInput = {
 export type SubscriptionCreateWithoutPaymentsInput = {
   id?: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
+  account?: Prisma.SubscriptionAccountCreateNestedOneWithoutSubscriptionsInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutSubscriptionInput
   categories?: Prisma.SubscriptionCategoryCreateNestedManyWithoutSubscriptionInput
 }
@@ -928,13 +1047,15 @@ export type SubscriptionCreateWithoutPaymentsInput = {
 export type SubscriptionUncheckedCreateWithoutPaymentsInput = {
   id?: string
   user_id: string
+  account_id: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -961,16 +1082,18 @@ export type SubscriptionUpdateToOneWithWhereWithoutPaymentsInput = {
 export type SubscriptionUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+  account?: Prisma.SubscriptionAccountUpdateOneWithoutSubscriptionsNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutSubscriptionNestedInput
   categories?: Prisma.SubscriptionCategoryUpdateManyWithoutSubscriptionNestedInput
 }
@@ -978,13 +1101,15 @@ export type SubscriptionUpdateWithoutPaymentsInput = {
 export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  account_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -992,15 +1117,81 @@ export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
   categories?: Prisma.SubscriptionCategoryUncheckedUpdateManyWithoutSubscriptionNestedInput
 }
 
-export type SubscriptionCreateManyUserInput = {
+export type SubscriptionCreateWithoutAccountInput = {
   id?: string
   name: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.StatusSubscription
   last_payment_at: Date | string
-  period?: $Enums.Period
+  period: $Enums.Period
   count?: number
-  ahead_payment_at: Date | string
+  next_payment_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutSubscriptionInput
+  categories?: Prisma.SubscriptionCategoryCreateNestedManyWithoutSubscriptionInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
+}
+
+export type SubscriptionUncheckedCreateWithoutAccountInput = {
+  id?: string
+  user_id: string
+  name: string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.StatusSubscription
+  last_payment_at: Date | string
+  period: $Enums.Period
+  count?: number
+  next_payment_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutSubscriptionInput
+  categories?: Prisma.SubscriptionCategoryUncheckedCreateNestedManyWithoutSubscriptionInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+}
+
+export type SubscriptionCreateOrConnectWithoutAccountInput = {
+  where: Prisma.SubscriptionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubscriptionCreateWithoutAccountInput, Prisma.SubscriptionUncheckedCreateWithoutAccountInput>
+}
+
+export type SubscriptionCreateManyAccountInputEnvelope = {
+  data: Prisma.SubscriptionCreateManyAccountInput | Prisma.SubscriptionCreateManyAccountInput[]
+  skipDuplicates?: boolean
+}
+
+export type SubscriptionUpsertWithWhereUniqueWithoutAccountInput = {
+  where: Prisma.SubscriptionWhereUniqueInput
+  update: Prisma.XOR<Prisma.SubscriptionUpdateWithoutAccountInput, Prisma.SubscriptionUncheckedUpdateWithoutAccountInput>
+  create: Prisma.XOR<Prisma.SubscriptionCreateWithoutAccountInput, Prisma.SubscriptionUncheckedCreateWithoutAccountInput>
+}
+
+export type SubscriptionUpdateWithWhereUniqueWithoutAccountInput = {
+  where: Prisma.SubscriptionWhereUniqueInput
+  data: Prisma.XOR<Prisma.SubscriptionUpdateWithoutAccountInput, Prisma.SubscriptionUncheckedUpdateWithoutAccountInput>
+}
+
+export type SubscriptionUpdateManyWithWhereWithoutAccountInput = {
+  where: Prisma.SubscriptionScalarWhereInput
+  data: Prisma.XOR<Prisma.SubscriptionUpdateManyMutationInput, Prisma.SubscriptionUncheckedUpdateManyWithoutAccountInput>
+}
+
+export type SubscriptionCreateManyUserInput = {
+  id?: string
+  account_id: string
+  name: string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.StatusSubscription
+  last_payment_at: Date | string
+  period: $Enums.Period
+  count?: number
+  next_payment_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1009,15 +1200,17 @@ export type SubscriptionCreateManyUserInput = {
 export type SubscriptionUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  account?: Prisma.SubscriptionAccountUpdateOneWithoutSubscriptionsNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutSubscriptionNestedInput
   categories?: Prisma.SubscriptionCategoryUpdateManyWithoutSubscriptionNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
@@ -1025,13 +1218,15 @@ export type SubscriptionUpdateWithoutUserInput = {
 
 export type SubscriptionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  account_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1042,13 +1237,85 @@ export type SubscriptionUncheckedUpdateWithoutUserInput = {
 
 export type SubscriptionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  account_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
   last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
   count?: Prisma.IntFieldUpdateOperationsInput | number
-  ahead_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type SubscriptionCreateManyAccountInput = {
+  id?: string
+  user_id: string
+  name: string
+  url?: string | null
+  next_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.StatusSubscription
+  last_payment_at: Date | string
+  period: $Enums.Period
+  count?: number
+  next_payment_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type SubscriptionUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
+  last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutSubscriptionNestedInput
+  categories?: Prisma.SubscriptionCategoryUpdateManyWithoutSubscriptionNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
+}
+
+export type SubscriptionUncheckedUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
+  last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutSubscriptionNestedInput
+  categories?: Prisma.SubscriptionCategoryUncheckedUpdateManyWithoutSubscriptionNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+}
+
+export type SubscriptionUncheckedUpdateManyWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  next_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumStatusSubscriptionFieldUpdateOperationsInput | $Enums.StatusSubscription
+  last_payment_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  period?: Prisma.EnumPeriodFieldUpdateOperationsInput | $Enums.Period
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+  next_payment_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1106,17 +1373,20 @@ export type SubscriptionCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime
 export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   user_id?: boolean
+  account_id?: boolean
   name?: boolean
-  amount?: boolean
+  url?: boolean
+  next_amount?: boolean
   status?: boolean
   last_payment_at?: boolean
   period?: boolean
   count?: boolean
-  ahead_payment_at?: boolean
+  next_payment_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  account?: boolean | Prisma.Subscription$accountArgs<ExtArgs>
   notifications?: boolean | Prisma.Subscription$notificationsArgs<ExtArgs>
   categories?: boolean | Prisma.Subscription$categoriesArgs<ExtArgs>
   payments?: boolean | Prisma.Subscription$paymentsArgs<ExtArgs>
@@ -1126,53 +1396,62 @@ export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   user_id?: boolean
+  account_id?: boolean
   name?: boolean
-  amount?: boolean
+  url?: boolean
+  next_amount?: boolean
   status?: boolean
   last_payment_at?: boolean
   period?: boolean
   count?: boolean
-  ahead_payment_at?: boolean
+  next_payment_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  account?: boolean | Prisma.Subscription$accountArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   user_id?: boolean
+  account_id?: boolean
   name?: boolean
-  amount?: boolean
+  url?: boolean
+  next_amount?: boolean
   status?: boolean
   last_payment_at?: boolean
   period?: boolean
   count?: boolean
-  ahead_payment_at?: boolean
+  next_payment_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  account?: boolean | Prisma.Subscription$accountArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectScalar = {
   id?: boolean
   user_id?: boolean
+  account_id?: boolean
   name?: boolean
-  amount?: boolean
+  url?: boolean
+  next_amount?: boolean
   status?: boolean
   last_payment_at?: boolean
   period?: boolean
   count?: boolean
-  ahead_payment_at?: boolean
+  next_payment_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "name" | "amount" | "status" | "last_payment_at" | "period" | "count" | "ahead_payment_at" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["subscription"]>
+export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "account_id" | "name" | "url" | "next_amount" | "status" | "last_payment_at" | "period" | "count" | "next_payment_at" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["subscription"]>
 export type SubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  account?: boolean | Prisma.Subscription$accountArgs<ExtArgs>
   notifications?: boolean | Prisma.Subscription$notificationsArgs<ExtArgs>
   categories?: boolean | Prisma.Subscription$categoriesArgs<ExtArgs>
   payments?: boolean | Prisma.Subscription$paymentsArgs<ExtArgs>
@@ -1180,15 +1459,18 @@ export type SubscriptionInclude<ExtArgs extends runtime.Types.Extensions.Interna
 }
 export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  account?: boolean | Prisma.Subscription$accountArgs<ExtArgs>
 }
 export type SubscriptionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  account?: boolean | Prisma.Subscription$accountArgs<ExtArgs>
 }
 
 export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Subscription"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    account: Prisma.$SubscriptionAccountPayload<ExtArgs> | null
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     categories: Prisma.$SubscriptionCategoryPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
@@ -1196,13 +1478,15 @@ export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     user_id: string
+    account_id: string
     name: string
-    amount: runtime.Decimal
+    url: string | null
+    next_amount: runtime.Decimal
     status: $Enums.StatusSubscription
     last_payment_at: Date
     period: $Enums.Period
     count: number
-    ahead_payment_at: Date
+    next_payment_at: Date | null
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
@@ -1601,6 +1885,7 @@ readonly fields: SubscriptionFieldRefs;
 export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  account<T extends Prisma.Subscription$accountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subscription$accountArgs<ExtArgs>>): Prisma.Prisma__SubscriptionAccountClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   notifications<T extends Prisma.Subscription$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subscription$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   categories<T extends Prisma.Subscription$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subscription$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Subscription$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subscription$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1635,13 +1920,15 @@ export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends run
 export interface SubscriptionFieldRefs {
   readonly id: Prisma.FieldRef<"Subscription", 'String'>
   readonly user_id: Prisma.FieldRef<"Subscription", 'String'>
+  readonly account_id: Prisma.FieldRef<"Subscription", 'String'>
   readonly name: Prisma.FieldRef<"Subscription", 'String'>
-  readonly amount: Prisma.FieldRef<"Subscription", 'Decimal'>
+  readonly url: Prisma.FieldRef<"Subscription", 'String'>
+  readonly next_amount: Prisma.FieldRef<"Subscription", 'Decimal'>
   readonly status: Prisma.FieldRef<"Subscription", 'StatusSubscription'>
   readonly last_payment_at: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly period: Prisma.FieldRef<"Subscription", 'Period'>
   readonly count: Prisma.FieldRef<"Subscription", 'Int'>
-  readonly ahead_payment_at: Prisma.FieldRef<"Subscription", 'DateTime'>
+  readonly next_payment_at: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly created_at: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Subscription", 'DateTime'>
@@ -2043,6 +2330,25 @@ export type SubscriptionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Subscriptions to delete.
    */
   limit?: number
+}
+
+/**
+ * Subscription.account
+ */
+export type Subscription$accountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SubscriptionAccount
+   */
+  select?: Prisma.SubscriptionAccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SubscriptionAccount
+   */
+  omit?: Prisma.SubscriptionAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubscriptionAccountInclude<ExtArgs> | null
+  where?: Prisma.SubscriptionAccountWhereInput
 }
 
 /**

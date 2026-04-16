@@ -5,6 +5,7 @@ import { PrismaModule } from './database/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { configJwt } from './common/config/jwt.config';
 import { UserModule } from './module/user/user.module';
+import { SubscriptionModule } from './module/subscription/subscription.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from './module/user/user.module';
       inject: [ConfigService],
     }),
     UserModule,
+    SubscriptionModule,
   ],
 })
 export class AppModule {}

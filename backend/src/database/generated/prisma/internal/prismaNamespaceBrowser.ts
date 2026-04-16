@@ -56,7 +56,8 @@ export const ModelName = {
   Notification: 'Notification',
   Subscription: 'Subscription',
   SubscriptionCategory: 'SubscriptionCategory',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  SubscriptionAccount: 'SubscriptionAccount'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -88,6 +89,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 
 export const TokenRefreshScalarFieldEnum = {
+  id: 'id',
   user_id: 'user_id',
   token_hash: 'token_hash'
 } as const
@@ -111,13 +113,15 @@ export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[k
 export const SubscriptionScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
+  account_id: 'account_id',
   name: 'name',
-  amount: 'amount',
+  url: 'url',
+  next_amount: 'next_amount',
   status: 'status',
   last_payment_at: 'last_payment_at',
   period: 'period',
   count: 'count',
-  ahead_payment_at: 'ahead_payment_at',
+  next_payment_at: 'next_payment_at',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -142,6 +146,16 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const SubscriptionAccountScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  type_login: 'type_login',
+  login: 'login'
+} as const
+
+export type SubscriptionAccountScalarFieldEnum = (typeof SubscriptionAccountScalarFieldEnum)[keyof typeof SubscriptionAccountScalarFieldEnum]
 
 
 export const SortOrder = {
