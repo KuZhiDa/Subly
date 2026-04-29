@@ -1,23 +1,18 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { UserService } from '../use-case/user.service';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { UpdateDto } from './dto/update.dto';
+import { UpdateDto } from './dto/user.dto';
 import { CurrentUser } from 'src/common/decorator/user.decorator';
 
-@ApiTags('Управление пользователем.')
+@ApiTags('Управление пользователем')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get(':id')
+  @Get('')
   @ApiOperation({
     summary: 'Получение данных пользователя.',
   })
@@ -27,7 +22,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Patch(':id')
+  @Patch('')
   @ApiOperation({
     summary: 'обновление данных пользователя.',
   })

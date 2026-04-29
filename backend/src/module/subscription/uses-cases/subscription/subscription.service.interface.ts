@@ -1,7 +1,9 @@
+import { Category } from 'src/database/generated/prisma/enums';
 import {
+  CreatePaidDto,
   CreateSubscriptionDto,
   UpdateSubscriptionDto,
-} from '../presentation/dto/subscription.dto';
+} from '../../presentation/dto/subscription.dto';
 
 export interface ISubscriptionService {
   create(dto: CreateSubscriptionDto, userId: string);

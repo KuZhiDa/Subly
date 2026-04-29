@@ -1,21 +1,31 @@
 import {
   BadRequestException,
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { ISubscriptionService } from './subscription.service.interface';
 import {
+  CreatePaidDto,
   CreateSubscriptionDto,
   UpdateSubscriptionDto,
-} from '../presentation/dto/subscription.dto';
+} from '../../presentation/dto/subscription.dto';
 import { PrismaService } from 'src/database/prisma.service';
-import { PeriodInSetFunc } from 'src/common/const/date-transform';
-import { Login, Period } from 'src/database/generated/prisma/client';
+import { Category, Login } from 'src/database/generated/prisma/client';
+import { PaymentService } from '../payment/payment.service';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(forwardRef(() => PaymentService))
+    private paymentService: PaymentService,
+    @Inject(forwardRef(() => CategoriesService))
+    private categoriesService: CategoriesService,
+  ) {}
 
   async create(dto: CreateSubscriptionDto, userId: string) {
     const account = await this.accountUpsert(
@@ -40,7 +50,7 @@ export class SubscriptionService implements ISubscriptionService {
       throw new BadRequestException('Такая подписка уже существует.');
     }
 
-    const next_payment_at = await this.nextPaymentAt(
+    const nextPaymentAt = await this.paymentService.updateNextPaymentAt(
       dto.last_payment_at,
       dto.count,
       dto.period,
@@ -55,53 +65,20 @@ export class SubscriptionService implements ISubscriptionService {
         url: dto.url ?? null,
         period: dto.period,
         count: dto.count ?? 1,
-        next_payment_at: next_payment_at,
+        next_payment_at: nextPaymentAt,
         next_amount: dto.amountNext ?? dto.amountLast,
       },
     });
 
-    const payment = await this.prisma.payment.create({
-      data: {
-        subscription_id: subscription.id,
-        amount: dto.amountLast,
-        payment_date: dto.last_payment_at,
-      },
-    });
+    const payment = await this.paymentService.createPayment(
+      subscription.id,
+      dto.amountLast,
+      dto.last_payment_at,
+    );
+
+    await this.categoriesService.addCategories(subscription.id, dto.categories);
 
     return { subscription, payment };
-  }
-
-  async getAll(userId: string) {
-    const subscriptions = await this.prisma.subscription.findMany({
-      where: { user_id: userId, deleted_at: null },
-      include: { account: true },
-    });
-
-    return subscriptions?.map((s) => ({
-      id: s.id,
-      name: s.name,
-      last_payment_at: s.last_payment_at,
-      next_payment_at: s.next_payment_at,
-    }));
-  }
-
-  async getOne(userId: string, subscriptionId: string) {
-    const subscription = await this.prisma.subscription.findUnique({
-      where: { id: subscriptionId },
-      include: { account: true },
-    });
-
-    if (!subscription) {
-      throw new NotFoundException('Такой подписки нет.');
-    }
-
-    if (subscription.user_id !== userId) {
-      throw new ForbiddenException(
-        'У вас нет прав просматривать данную подписку.',
-      );
-    }
-
-    return subscription;
   }
 
   async update(
@@ -112,7 +89,7 @@ export class SubscriptionService implements ISubscriptionService {
     const subscription = await this.getOne(userId, subscriptionId);
 
     if (subscription.deleted_at) {
-      throw new BadRequestException('Эта подписка удалена.');
+      throw new ForbiddenException('Эта подписка удалена.');
     }
 
     const data: any = {};
@@ -130,7 +107,7 @@ export class SubscriptionService implements ISubscriptionService {
     }
 
     if (dto.count || dto.period) {
-      data.next_payment_at = await this.nextPaymentAt(
+      data.next_payment_at = await this.paymentService.updateNextPaymentAt(
         subscription.last_payment_at,
         dto.count ?? subscription.count,
         dto.period ?? subscription.period,
@@ -141,18 +118,36 @@ export class SubscriptionService implements ISubscriptionService {
       data.next_amount = dto.amountNext;
     }
 
-    if (dto.amountPayment) {
-      await this.prisma.payment.update({
-        where: {
-          subscription_id_payment_date: {
-            subscription_id: subscriptionId,
-            payment_date: subscription.last_payment_at,
-          },
-        },
-        data: {
-          amount: dto.amountPayment,
-        },
-      });
+    if (dto.amountLast) {
+      await this.paymentService.updateAmount(
+        subscriptionId,
+        dto.last_payment_at ?? subscription.last_payment_at,
+        dto.amountLast,
+      );
+    }
+
+    const categoriesCurrent = await this.prisma.subscriptionCategory.findMany({
+      where: {
+        subscription_id: subscriptionId,
+      },
+    });
+
+    const current = categoriesCurrent.map((c) => c.category);
+
+    const [categoriesDelete, categoriesAdd] = await Promise.all([
+      current.filter((c) => !dto.categories.includes(c)),
+      dto.categories.filter((c) => !current.includes(c)),
+    ]);
+
+    if (categoriesDelete?.length) {
+      await this.categoriesService.deleteCategories(
+        userId,
+        subscriptionId,
+        categoriesDelete,
+      );
+    }
+    if (categoriesAdd?.length) {
+      await this.categoriesService.addCategories(subscriptionId, categoriesAdd);
     }
 
     const {
@@ -161,7 +156,8 @@ export class SubscriptionService implements ISubscriptionService {
       number,
       set_symbol,
       amountNext,
-      amountPayment,
+      amountLast,
+      categories,
       ...result
     } = dto;
 
@@ -182,6 +178,39 @@ export class SubscriptionService implements ISubscriptionService {
       where: { id: subscriptionId },
       data: { deleted_at: new Date() },
     });
+  }
+
+  async getAll(userId: string) {
+    const subscriptions = await this.prisma.subscription.findMany({
+      where: { user_id: userId, deleted_at: null },
+      include: { account: true, categories: true },
+    });
+
+    return subscriptions?.map((s) => ({
+      id: s.id,
+      name: s.name,
+      last_payment_at: s.last_payment_at,
+      next_payment_at: s.next_payment_at,
+    }));
+  }
+
+  async getOne(userId: string, subscriptionId: string) {
+    const subscription = await this.prisma.subscription.findUnique({
+      where: { id: subscriptionId },
+      include: { account: true, categories: true },
+    });
+
+    if (!subscription) {
+      throw new NotFoundException('Такой подписки нет.');
+    }
+
+    if (subscription.user_id !== userId) {
+      throw new ForbiddenException(
+        'У вас нет прав просматривать данную подписку.',
+      );
+    }
+
+    return subscription;
   }
 
   async accountUpsert(
@@ -207,10 +236,5 @@ export class SubscriptionService implements ISubscriptionService {
       create: { type_login: type_login, login, user_id: userId },
       update: {},
     });
-  }
-
-  async nextPaymentAt(last_payment_at: Date, count: number, period: Period) {
-    const next_payment_at: Date = new Date(last_payment_at);
-    return new Date(PeriodInSetFunc[period](next_payment_at, count ?? 1));
   }
 }

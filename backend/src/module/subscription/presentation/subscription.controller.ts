@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { SubscriptionService } from '../use-case/subscription.service';
+import { SubscriptionService } from '../uses-cases/subscription/subscription.service';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -18,15 +18,57 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import {
+  CategoriesDto,
+  CreatePaidDto,
   CreateSubscriptionDto,
   UpdateSubscriptionDto,
 } from './dto/subscription.dto';
 import { CurrentUser } from 'src/common/decorator/user.decorator';
+import { CategoriesService } from '../uses-cases/categories/categories.service';
+import { PaymentService } from '../uses-cases/payment/payment.service';
 
 @ApiTags('Управление подписками')
 @Controller('subscription')
 export class SubscriptionController {
-  constructor(private readonly subscriptionService: SubscriptionService) {}
+  constructor(
+    private readonly subscriptionService: SubscriptionService,
+    private readonly categoriesService: CategoriesService,
+    private readonly paymentService: PaymentService,
+  ) {}
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  @ApiOperation({
+    summary: 'Получение всех подписок пользователя.',
+  })
+  async getAll(@CurrentUser('id') id: string) {
+    return await this.subscriptionService.getAll(id);
+  }
+
+  @Get('categories-all')
+  @ApiOperation({ summary: 'Получение списка категорий.' })
+  async getCategoriesAll() {
+    return await this.categoriesService.getCategoriesAll();
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id')
+  @ApiOperation({
+    summary: 'Получение конкретной подписки пользователя.',
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'Id подписки.',
+  })
+  async getOne(
+    @CurrentUser('id') userId: string,
+    @Param('id') subscriptionId: string,
+  ) {
+    return await this.subscriptionService.getOne(userId, subscriptionId);
+  }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
@@ -47,30 +89,36 @@ export class SubscriptionController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get()
-  @ApiOperation({
-    summary: 'Получение всех подписок пользователя.',
+  @Post(':id/categories')
+  @ApiOperation({ summary: 'Добавление категории у подписки.' })
+  @ApiParam({ name: 'id', type: String, description: 'id подписки.' })
+  @ApiBody({
+    description: 'Список категорий (всегда будет один элемент)',
+    type: CategoriesDto,
   })
-  async getAll(@CurrentUser('id') id: string) {
-    return await this.subscriptionService.getAll(id);
+  async addCategories(
+    @CurrentUser('id') userId: string,
+    @Param('id') subscriptionId: string,
+    @Body() dto: CategoriesDto,
+  ) {
+    return await this.categoriesService.addCategoryOne(
+      userId,
+      subscriptionId,
+      dto.categories,
+    );
   }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get(':id')
-  @ApiOperation({
-    summary: 'Получение всех подписок пользователя.',
-  })
-  @ApiParam({
-    name: 'id',
-    type: String,
-    description: 'Id подписки.',
-  })
-  async getOne(
+  @Patch(':id/payment')
+  @ApiOperation({ summary: 'Создание записи о платеже подписки.' })
+  @ApiBody({ description: 'Данные оплаты', type: CreatePaidDto })
+  async createPaid(
     @CurrentUser('id') userId: string,
     @Param('id') subscriptionId: string,
+    @Body() dto: CreatePaidDto,
   ) {
-    return await this.subscriptionService.getOne(userId, subscriptionId);
+    await this.paymentService.paidSubscription(userId, subscriptionId, dto);
   }
 
   @ApiBearerAuth()
@@ -91,13 +139,9 @@ export class SubscriptionController {
   async update(
     @CurrentUser('id') userId: string,
     @Param('id') subscriptionId: string,
-    @Body() UpdateSubscriptionDto,
+    @Body() dto: UpdateSubscriptionDto,
   ) {
-    return await this.subscriptionService.update(
-      userId,
-      subscriptionId,
-      UpdateSubscriptionDto,
-    );
+    return await this.subscriptionService.update(userId, subscriptionId, dto);
   }
 
   @ApiBearerAuth()
@@ -116,5 +160,26 @@ export class SubscriptionController {
     @Param('id') subscriptionId: string,
   ) {
     return await this.subscriptionService.delete(userId, subscriptionId);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':id/categories')
+  @ApiOperation({ summary: 'Удаление категории у подписки.' })
+  @ApiParam({ name: 'id', type: String, description: 'id подписки.' })
+  @ApiBody({
+    description: 'Список категорий (всегда будет один элемент)',
+    type: CategoriesDto,
+  })
+  async deleteCategories(
+    @CurrentUser('id') userId: string,
+    @Param('id') subscriptionId: string,
+    @Body() dto: CategoriesDto,
+  ) {
+    return await this.categoriesService.deleteCategories(
+      userId,
+      subscriptionId,
+      dto.categories,
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { UpdateDto } from '../presentation/dto/update.dto';
+import { UpdateDto } from '../presentation/dto/user.dto';
 
 export interface IUserService {
   getOne(id: string);
