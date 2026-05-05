@@ -20,6 +20,7 @@ import {
 } from 'src/database/generated/prisma/client';
 import { PaymentService } from '../payment/payment.service';
 import { CategoriesService } from '../categories/categories.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService {
@@ -29,6 +30,7 @@ export class SubscriptionService implements ISubscriptionService {
     private paymentService: PaymentService,
     @Inject(forwardRef(() => CategoriesService))
     private categoriesService: CategoriesService,
+    private emitter: EventEmitter2,
   ) {}
 
   async create(dto: CreateSubscriptionDto, userId: string) {
@@ -245,16 +247,26 @@ export class SubscriptionService implements ISubscriptionService {
   async checkNextPaymentAt() {
     const subscriptions = await this.prisma.subscription.findMany({
       where: { next_payment_at: { lte: new Date() } },
+      include: { user: true },
     });
 
     const updateId = [];
 
-    subscriptions.forEach((s) => {
-      if (s.status === StatusSubscription.PAID) {
-        updateId.push(s.id);
-      }
-      console.log(s);
-    });
+    if (subscriptions?.length) {
+      const emit = subscriptions?.map((s) => {
+        if (s.status === StatusSubscription.PAID) {
+          updateId.push(s.id);
+        }
+        return {
+          subscriptionId: s.id,
+          subscriptionName: s.name,
+          userId: s.user.id,
+          userEmail: s.user.email,
+        };
+      });
+
+      this.emitter.emit('ExpiredSubscription', emit);
+    }
 
     if (updateId?.length) {
       await this.prisma.subscription.updateMany({

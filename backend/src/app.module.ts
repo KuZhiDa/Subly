@@ -9,6 +9,8 @@ import { SubscriptionModule } from './module/subscription/subscription.module';
 import { BullModule } from '@nestjs/bullmq';
 import { configBull } from './common/config/bull.config';
 import { MonitorModule } from './module/monitor/monitor.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { NotificationModule } from './module/notification/notification.module';
 
 @Module({
   imports: [
@@ -29,9 +31,11 @@ import { MonitorModule } from './module/monitor/monitor.module';
       useFactory: configBull,
       inject: [ConfigService],
     }),
+    EventEmitterModule.forRoot({ global: true }),
     UserModule,
     SubscriptionModule,
     MonitorModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}
