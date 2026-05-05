@@ -9,7 +9,7 @@ export class MonitorService {
     @InjectQueue('check_subscriptions') private checkSubscriptionsQueue: Queue,
   ) {}
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async monitorSubscriptions() {
     await this.checkSubscriptionsQueue.add('check_subscriptions', {});
   }

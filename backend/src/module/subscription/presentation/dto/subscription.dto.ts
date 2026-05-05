@@ -14,7 +14,10 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { BaseSubscriptionDto } from 'src/common/dto/base-subscription.dto';
-import { Category, Login } from 'src/database/generated/prisma/enums';
+import {
+  Category,
+  Login,
+} from 'src/infrastructure/database/generated/prisma/enums';
 
 export class CategoriesDto {
   @ApiProperty({

@@ -3,6 +3,7 @@ import { SubscriptionService } from './uses-cases/subscription/subscription.serv
 import { SubscriptionController } from './presentation/subscription.controller';
 import { PaymentService } from './uses-cases/payment/payment.service';
 import { CategoriesService } from './uses-cases/categories/categories.service';
+import { QueueModule } from '../../infrastructure/queue/queue.module';
 
 @Module({
   controllers: [SubscriptionController],

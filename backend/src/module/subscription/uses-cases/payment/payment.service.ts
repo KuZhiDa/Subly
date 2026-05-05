@@ -8,8 +8,8 @@ import { PeriodInSetFunc } from 'src/common/const/date-transform';
 import {
   Period,
   StatusSubscription,
-} from 'src/database/generated/prisma/enums';
-import { PrismaService } from 'src/database/prisma.service';
+} from 'src/infrastructure/database/generated/prisma/enums';
+import { PrismaService } from 'src/infrastructure/database/prisma.service';
 import { IPaymentService } from './payment.service.interface';
 import { SubscriptionService } from 'src/module/subscription/uses-cases/subscription/subscription.service';
 import { CreatePaidDto } from '../../presentation/dto/subscription.dto';

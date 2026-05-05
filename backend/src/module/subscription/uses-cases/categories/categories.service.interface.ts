@@ -1,4 +1,4 @@
-import { Category } from 'src/database/generated/prisma/enums';
+import { Category } from 'src/infrastructure/database/generated/prisma/enums';
 
 export interface ICategoriesService {
   addCategories(subscriptionId: string, categories: Category[]);

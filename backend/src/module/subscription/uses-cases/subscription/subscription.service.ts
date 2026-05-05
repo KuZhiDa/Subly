@@ -8,19 +8,19 @@ import {
 } from '@nestjs/common';
 import { ISubscriptionService } from './subscription.service.interface';
 import {
-  CreatePaidDto,
   CreateSubscriptionDto,
   UpdateSubscriptionDto,
 } from '../../presentation/dto/subscription.dto';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from 'src/infrastructure/database/prisma.service';
 import {
-  Category,
   Login,
   StatusSubscription,
-} from 'src/database/generated/prisma/client';
+} from 'src/infrastructure/database/generated/prisma/client';
 import { PaymentService } from '../payment/payment.service';
 import { CategoriesService } from '../categories/categories.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService {
@@ -242,37 +242,5 @@ export class SubscriptionService implements ISubscriptionService {
       create: { type_login: type_login, login, user_id: userId },
       update: {},
     });
-  }
-
-  async checkNextPaymentAt() {
-    const subscriptions = await this.prisma.subscription.findMany({
-      where: { next_payment_at: { lte: new Date() } },
-      include: { user: true },
-    });
-
-    const updateId = [];
-
-    if (subscriptions?.length) {
-      const emit = subscriptions?.map((s) => {
-        if (s.status === StatusSubscription.PAID) {
-          updateId.push(s.id);
-        }
-        return {
-          subscriptionId: s.id,
-          subscriptionName: s.name,
-          userId: s.user.id,
-          userEmail: s.user.email,
-        };
-      });
-
-      this.emitter.emit('ExpiredSubscription', emit);
-    }
-
-    if (updateId?.length) {
-      await this.prisma.subscription.updateMany({
-        where: { id: { in: updateId } },
-        data: { status: StatusSubscription.NOT_PAID },
-      });
-    }
   }
 }

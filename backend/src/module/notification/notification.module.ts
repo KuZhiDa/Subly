@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { NotificationService } from './notification.service';
-import { NotificationController } from './notification.controller';
-import { MonitorModule } from '../monitor/monitor.module';
-import { BullModule } from '@nestjs/bullmq';
+import { QueueModule } from '../../infrastructure/queue/queue.module';
+import { NotificationController } from './presentation/notification.controller';
+import { NotificationService } from './use-case/notification.service';
 
 @Module({
   controllers: [NotificationController],
   providers: [NotificationService],
-  imports: [BullModule.registerQueue({ name: 'notifications' })],
+  imports: [QueueModule],
   exports: [NotificationService],
 })
 export class NotificationModule {}

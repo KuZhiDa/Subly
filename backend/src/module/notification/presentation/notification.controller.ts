@@ -1,10 +1,10 @@
 import { Controller, Sse, UseGuards } from '@nestjs/common';
-import { NotificationService } from './notification.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/common/decorator/user.decorator';
-import { filter, fromEvent, map } from 'rxjs';
+import { fromEvent, map } from 'rxjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { NotificationService } from '../use-case/notification.service';
 
 @ApiTags('Уведомления пользователя.')
 @Controller('notification')

@@ -8,7 +8,7 @@ import {
   IsOptional,
   Min,
 } from 'class-validator';
-import { Period } from 'src/database/generated/prisma/enums';
+import { Period } from 'src/infrastructure/database/generated/prisma/enums';
 
 export class BaseSubscriptionDto {
   @ApiProperty({

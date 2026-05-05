@@ -1,14 +1,19 @@
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { MonitorService } from './monitor.service';
 import { CheckSubscriptionsWorker } from './workers/check-subscriptions.worker';
-import { SubscriptionModule } from '../subscription/subscription.module';
-import { NotificationModule } from '../notification/notification.module';
+import { SubscriptionModule } from '../../module/subscription/subscription.module';
 import { NotificationWorker } from './workers/notification.worker';
+import { CheckSubscriptionQueueService } from './services/check-subscription.queue.service';
+import { NotificationQueueService } from './services/notification.queue.service';
 
 @Module({
-  providers: [MonitorService, CheckSubscriptionsWorker, NotificationWorker],
+  providers: [
+    CheckSubscriptionsWorker,
+    NotificationWorker,
+    CheckSubscriptionQueueService,
+    NotificationQueueService,
+  ],
   imports: [
     BullModule.registerQueue(
       {
@@ -33,5 +38,6 @@ import { NotificationWorker } from './workers/notification.worker';
     ScheduleModule.forRoot(),
     SubscriptionModule,
   ],
+  exports: [BullModule],
 })
-export class MonitorModule {}
+export class QueueModule {}

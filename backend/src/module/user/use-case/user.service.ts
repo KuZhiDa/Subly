@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { IUserService } from './user.service.interface';
 import { UpdateDto } from '../presentation/dto/user.dto';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from 'src/infrastructure/database/prisma.service';
 import { SecretService } from 'src/common/service/secret.service';
 
 @Injectable()

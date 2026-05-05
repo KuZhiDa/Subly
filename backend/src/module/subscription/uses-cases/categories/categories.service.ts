@@ -5,9 +5,9 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { ICategoriesService } from './categories.service.interface';
-import { Category } from 'src/database/generated/prisma/enums';
+import { Category } from 'src/infrastructure/database/generated/prisma/enums';
 import { SubscriptionService } from '../subscription/subscription.service';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from 'src/infrastructure/database/prisma.service';
 
 @Injectable()
 export class CategoriesService implements ICategoriesService {
