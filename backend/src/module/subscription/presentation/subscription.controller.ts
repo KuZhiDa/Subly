@@ -110,7 +110,7 @@ export class SubscriptionController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Patch(':id/payment')
+  @Post(':id/payment')
   @ApiOperation({ summary: 'Создание записи о платеже подписки.' })
   @ApiBody({ description: 'Данные оплаты', type: CreatePaidDto })
   async createPaid(

@@ -6,6 +6,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { configJwt } from './common/config/jwt.config';
 import { UserModule } from './module/user/user.module';
 import { SubscriptionModule } from './module/subscription/subscription.module';
+import { BullModule } from '@nestjs/bullmq';
+import { configBull } from './common/config/bull.config';
+import { MonitorModule } from './module/monitor/monitor.module';
 
 @Module({
   imports: [
@@ -21,8 +24,14 @@ import { SubscriptionModule } from './module/subscription/subscription.module';
       useFactory: configJwt,
       inject: [ConfigService],
     }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: configBull,
+      inject: [ConfigService],
+    }),
     UserModule,
     SubscriptionModule,
+    MonitorModule,
   ],
 })
 export class AppModule {}

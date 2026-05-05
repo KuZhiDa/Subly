@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 
-export async function configJwt(configService: ConfigService) {
+export function configJwt(configService: ConfigService) {
   return {
     secret: configService.getOrThrow<string>('SECRET_KEY'),
     signOption: {

@@ -13,7 +13,11 @@ import {
   UpdateSubscriptionDto,
 } from '../../presentation/dto/subscription.dto';
 import { PrismaService } from 'src/database/prisma.service';
-import { Category, Login } from 'src/database/generated/prisma/client';
+import {
+  Category,
+  Login,
+  StatusSubscription,
+} from 'src/database/generated/prisma/client';
 import { PaymentService } from '../payment/payment.service';
 import { CategoriesService } from '../categories/categories.service';
 
@@ -236,5 +240,27 @@ export class SubscriptionService implements ISubscriptionService {
       create: { type_login: type_login, login, user_id: userId },
       update: {},
     });
+  }
+
+  async checkNextPaymentAt() {
+    const subscriptions = await this.prisma.subscription.findMany({
+      where: { next_payment_at: { lte: new Date() } },
+    });
+
+    const updateId = [];
+
+    subscriptions.forEach((s) => {
+      if (s.status === StatusSubscription.PAID) {
+        updateId.push(s.id);
+      }
+      console.log(s);
+    });
+
+    if (updateId?.length) {
+      await this.prisma.subscription.updateMany({
+        where: { id: { in: updateId } },
+        data: { status: StatusSubscription.NOT_PAID },
+      });
+    }
   }
 }

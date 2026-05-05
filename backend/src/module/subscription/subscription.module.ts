@@ -7,5 +7,6 @@ import { CategoriesService } from './uses-cases/categories/categories.service';
 @Module({
   controllers: [SubscriptionController],
   providers: [SubscriptionService, PaymentService, CategoriesService],
+  exports: [SubscriptionService],
 })
 export class SubscriptionModule {}
