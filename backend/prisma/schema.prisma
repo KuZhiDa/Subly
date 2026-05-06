@@ -47,7 +47,7 @@ model TokenRefresh{
 model Notification{
   id String @id @default(uuid())
   user_id String
-  subscription_id String?
+  subscription_id String
   message String @db.VarChar(250)
   status StatusNotification @default(SENT)
   created_at DateTime @default(now())
@@ -59,6 +59,7 @@ model Notification{
   @@index([user_id])
   @@index([user_id, status])
 
+  @@unique([user_id, subscription_id])
   @@map("notification")
 }
 

@@ -1,6 +1,5 @@
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 import { CheckSubscriptionsWorker } from './workers/check-subscriptions.worker';
 import { SubscriptionModule } from '../../module/subscription/subscription.module';
 import { NotificationWorker } from './workers/notification.worker';
@@ -35,7 +34,6 @@ import { NotificationQueueService } from './services/notification.queue.service'
         },
       },
     ),
-    ScheduleModule.forRoot(),
     SubscriptionModule,
   ],
   exports: [BullModule],

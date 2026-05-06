@@ -11,6 +11,7 @@ import { configBull } from './common/config/bull.config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { NotificationModule } from './module/notification/notification.module';
 import { QueueModule } from './infrastructure/queue/queue.module';
+import { MonitorModule } from './infrastructure/monitor/monitor.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { QueueModule } from './infrastructure/queue/queue.module';
     SubscriptionModule,
     QueueModule,
     NotificationModule,
+    MonitorModule,
   ],
 })
 export class AppModule {}

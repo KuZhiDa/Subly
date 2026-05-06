@@ -19,18 +19,20 @@ export class CheckSubscriptionQueueService {
     const updateId = [];
 
     if (subscriptions?.length) {
-      const emit = subscriptions?.map((s) => {
+      const groups = subscriptions?.reduce((acc, s) => {
         if (s.status === StatusSubscription.PAID) {
           updateId.push(s.id);
         }
-        return {
-          subscriptionId: s.id,
-          subscriptionName: s.name,
-          userId: s.user.id,
-          userEmail: s.user.email,
-        };
-      });
-
+        if (!acc[s.user.id]) {
+          acc[s.user.id] = {
+            user: { id: s.user.id, email: s.user.email },
+            subscription: [],
+          };
+        }
+        acc[s.user.id].subscription.push({ id: s.id, name: s.name });
+        return acc;
+      }, {});
+      const emit = Object.values(groups);
       this.emitter.emit('ExpiredSubscription', emit);
     }
 
