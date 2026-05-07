@@ -12,35 +12,42 @@ export class CheckSubscriptionQueueService {
 
   async checkNextPaymentAt() {
     const subscriptions = await this.prisma.subscription.findMany({
-      where: { next_payment_at: { lte: new Date() } },
+      where: {
+        next_payment_at: { lte: new Date() },
+        status: StatusSubscription.PAID,
+      },
       include: { user: true },
     });
-
-    const updateId = [];
-
     if (subscriptions?.length) {
-      const groups = subscriptions?.reduce((acc, s) => {
-        if (s.status === StatusSubscription.PAID) {
-          updateId.push(s.id);
-        }
-        if (!acc[s.user.id]) {
-          acc[s.user.id] = {
-            user: { id: s.user.id, email: s.user.email },
-            subscription: [],
-          };
-        }
-        acc[s.user.id].subscription.push({ id: s.id, name: s.name });
-        return acc;
-      }, {});
-      const emit = Object.values(groups);
-      this.emitter.emit('ExpiredSubscription', emit);
-    }
+      const groups = subscriptions?.reduce(
+        (acc, s) => {
+          if (!acc[s.user.id]) {
+            acc[s.user.id] = {
+              user: { id: s.user.id, email: s.user.email },
+              subscription: [],
+            };
+          }
+          acc[s.user.id].subscription.push({ id: s.id, name: s.name });
+          return acc;
+        },
+        {} as Record<
+          string,
+          {
+            user: { id: string; email: string };
+            subscription: { id: string; name: string }[];
+          }
+        >,
+      );
 
-    if (updateId?.length) {
+      const emit = Object.values(groups);
+
       await this.prisma.subscription.updateMany({
-        where: { id: { in: updateId } },
+        where: {
+          id: { in: emit.flatMap((g) => g.subscription.map((s) => s.id)) },
+        },
         data: { status: StatusSubscription.NOT_PAID },
       });
+      this.emitter.emit('ExpiredSubscription', emit);
     }
   }
 }

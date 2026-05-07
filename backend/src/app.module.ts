@@ -12,6 +12,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { NotificationModule } from './module/notification/notification.module';
 import { QueueModule } from './infrastructure/queue/queue.module';
 import { MonitorModule } from './infrastructure/monitor/monitor.module';
+import { EmailModule } from './infrastructure/email/mailer.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { MonitorModule } from './infrastructure/monitor/monitor.module';
     QueueModule,
     NotificationModule,
     MonitorModule,
+    EmailModule,
   ],
 })
 export class AppModule {}

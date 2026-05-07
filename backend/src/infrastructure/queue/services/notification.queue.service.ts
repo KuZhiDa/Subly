@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { getMessageForNotification } from 'src/common/const/message';
 import { PrismaService } from 'src/infrastructure/database/prisma.service';
+import { EmailService } from 'src/infrastructure/email/email.service';
 
 @Injectable()
 export class NotificationQueueService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private emailService: EmailService,
+  ) {}
 
   async createNotifications(data: any) {
     await this.prisma.notification.createMany({
@@ -17,7 +21,7 @@ export class NotificationQueueService {
           };
         }),
       ),
-      skipDuplicates: true,
     });
+    await this.emailService.sendNotifications(data);
   }
 }

@@ -5,6 +5,7 @@ import { SubscriptionModule } from '../../module/subscription/subscription.modul
 import { NotificationWorker } from './workers/notification.worker';
 import { CheckSubscriptionQueueService } from './services/check-subscription.queue.service';
 import { NotificationQueueService } from './services/notification.queue.service';
+import { EmailModule } from '../email/mailer.module';
 
 @Module({
   providers: [
@@ -35,6 +36,7 @@ import { NotificationQueueService } from './services/notification.queue.service'
       },
     ),
     SubscriptionModule,
+    EmailModule,
   ],
   exports: [BullModule],
 })
