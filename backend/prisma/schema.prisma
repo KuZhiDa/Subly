@@ -142,9 +142,7 @@ enum StatusSubscription {
 }
 
 enum StatusNotification {
-  PENDING
   SENT
-  DELIVERED
   READ
 }
 

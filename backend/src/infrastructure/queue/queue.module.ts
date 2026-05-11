@@ -1,38 +1,42 @@
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
-import { CheckSubscriptionsWorker } from './workers/check-subscriptions.worker';
+import { ExpiredSubscriptionWorker } from './workers/expired-subscriptions.worker';
 import { SubscriptionModule } from '../../module/subscription/subscription.module';
-import { NotificationWorker } from './workers/notification.worker';
-import { CheckSubscriptionQueueService } from './services/check-subscription.queue.service';
-import { NotificationQueueService } from './services/notification.queue.service';
+import { CreateNotificationsWorker } from './workers/create-notifications.worker';
+import { CheckSubscriptionsQueueService } from './services/check-subscriptions.queue.service';
+import { NotificationsQueueService } from './services/notifications.queue.service';
 import { EmailModule } from '../email/mailer.module';
+import { optionsQueue } from 'src/common/const/queue.options';
+import { DeadlineSubscriptionWorker } from './workers/deadline-subscriptions.worker';
+import { SendNotificationsWorker } from './workers/send-notifications.worker';
 
 @Module({
   providers: [
-    CheckSubscriptionsWorker,
-    NotificationWorker,
-    CheckSubscriptionQueueService,
-    NotificationQueueService,
+    ExpiredSubscriptionWorker,
+    DeadlineSubscriptionWorker,
+    CreateNotificationsWorker,
+    SendNotificationsWorker,
+
+    CheckSubscriptionsQueueService,
+    NotificationsQueueService,
   ],
   imports: [
     BullModule.registerQueue(
       {
-        name: 'check_subscriptions',
-        defaultJobOptions: {
-          attempts: 3,
-          backoff: { type: 'exponential', delay: 2000 },
-          removeOnComplete: true,
-          removeOnFail: false,
-        },
+        name: 'expired_subscriptions',
+        defaultJobOptions: optionsQueue,
       },
       {
-        name: 'notifications',
-        defaultJobOptions: {
-          attempts: 3,
-          backoff: { type: 'exponential', delay: 2000 },
-          removeOnComplete: true,
-          removeOnFail: false,
-        },
+        name: 'deadline_subscriptions',
+        defaultJobOptions: optionsQueue,
+      },
+      {
+        name: 'create_notifications',
+        defaultJobOptions: optionsQueue,
+      },
+      {
+        name: 'send_notifications',
+        defaultJobOptions: optionsQueue,
       },
     ),
     SubscriptionModule,

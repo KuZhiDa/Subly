@@ -6,11 +6,25 @@ import { Queue } from 'bullmq';
 @Injectable()
 export class MonitorService {
   constructor(
-    @InjectQueue('check_subscriptions') private checkSubscriptionsQueue: Queue,
+    @InjectQueue('expired_subscriptions')
+    private expiredSubscriptionsQueue: Queue,
+    @InjectQueue('deadline_subscriptions')
+    private deadlineSubscriptionQueue: Queue,
+    @InjectQueue('send_notifications') private sendNotificationsQueue: Queue,
   ) {}
 
   @Cron(CronExpression.EVERY_30_SECONDS)
-  async monitorSubscriptions() {
-    await this.checkSubscriptionsQueue.add('check_subscriptions', {});
+  async expiredSubscriptions() {
+    await this.expiredSubscriptionsQueue.add('expired_subscriptions', {});
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async deadlineSubscriptions() {
+    await this.deadlineSubscriptionQueue.add('deadline_subscriptions', {});
+  }
+
+  @Cron('0 0 10 * * 1,5')
+  async sendNotifications() {
+    await this.sendNotificationsQueue.add('send_all_notifications', {});
   }
 }
