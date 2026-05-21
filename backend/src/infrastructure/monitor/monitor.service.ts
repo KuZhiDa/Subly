@@ -13,12 +13,12 @@ export class MonitorService {
     @InjectQueue('send_notifications') private sendNotificationsQueue: Queue,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_HOUR)
   async expiredSubscriptions() {
     await this.expiredSubscriptionsQueue.add('expired_subscriptions', {});
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_DAY_AT_10AM)
   async deadlineSubscriptions() {
     await this.deadlineSubscriptionQueue.add('deadline_subscriptions', {});
   }

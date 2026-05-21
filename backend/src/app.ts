@@ -23,7 +23,10 @@ export class App {
   private appConfig() {
     this.app.setGlobalPrefix(this.prefix);
     this.app.useGlobalPipes(
-      new ValidationPipe({ transform: true, whitelist: true }),
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
     );
     this.app.use(cookieParser());
     return this;
