@@ -13,15 +13,10 @@ import {
   UpdateSubscriptionDto,
 } from '../../presentation/dto/subscription.dto';
 import { PrismaService } from 'src/infrastructure/database/prisma.service';
-import {
-  Login,
-  StatusSubscription,
-} from 'src/infrastructure/database/generated/prisma/client';
+import { Login } from 'src/infrastructure/database/generated/prisma/client';
 import { PaymentService } from '../payment/payment.service';
 import { CategoriesService } from '../categories/categories.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
 import { StructureInTable } from 'src/common/const/get-structure';
 
 @Injectable()
@@ -211,15 +206,13 @@ export class SubscriptionService implements ISubscriptionService {
           return this.createRoad(q.filterColumn, param);
         }),
       );
-
       where.AND.push(...roads);
-    }
-    if (query.sorts?.length) {
     }
 
     const subscriptions = await this.prisma.subscription.findMany({
       where: { ...where, user_id: userId, deleted_at: null },
       include: { account: true, categories: true },
+      orderBy: query.sorts?.map((s) => ({ [s.sortsColumn]: s.by })),
     });
 
     return subscriptions?.map((s) => ({

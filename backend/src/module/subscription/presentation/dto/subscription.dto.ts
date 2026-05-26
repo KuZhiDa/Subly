@@ -4,10 +4,12 @@ import {
   IntersectionType,
   PartialType,
 } from '@nestjs/swagger';
+import { PrismaClient } from '@prisma/client/extension';
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsEnum,
+  IsIn,
   IsOptional,
   IsString,
   IsUrl,
@@ -20,6 +22,7 @@ import {
   Login,
   StatusSubscription,
 } from 'src/infrastructure/database/generated/prisma/enums';
+import { PrismaService } from 'src/infrastructure/database/prisma.service';
 
 export class CategoriesDto {
   @ApiProperty({

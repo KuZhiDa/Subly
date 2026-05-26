@@ -49,7 +49,8 @@ export class App {
 
   private async runApp() {
     this.app.listen(this.port, () => {
-      console.log(`http://localhost:${this.port}/${this.prefix}`);
+      console.log(`server: http://localhost:${this.port}/${this.prefix}`);
+      console.log(`swagger: http://localhost:${this.port}/${this.prefix}/docs`);
     });
     return this;
   }
