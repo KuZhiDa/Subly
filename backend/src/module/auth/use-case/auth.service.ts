@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { LoginDto, RegisterDto } from '../presentation/dto/auth.dto';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from 'src/infrastructure/database/prisma.service';
 import { SecretService } from '../../../common/service/secret.service';
 import { IAuthService } from './auth.service.interface';
 
@@ -119,10 +119,6 @@ export class AuthService implements IAuthService {
   }
 
   async checkRefreshToken(token: string) {
-    if (!token) {
-      throw new UnauthorizedException('В куках нет токена.');
-    }
-
     const { id, email } = await this.secretService.decodeToken(token);
 
     const tokenHash = await this.secretService.hashToken(token);
