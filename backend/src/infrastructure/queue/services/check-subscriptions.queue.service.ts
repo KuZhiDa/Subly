@@ -44,12 +44,12 @@ export class CheckSubscriptionsQueueService {
     dateNow.setHours(0, 0, 0, 0);
 
     const dateOneDay = {
-      leftDay: new Date(dateNow.setDate(dateNow.getDate() + 1)),
-      rightDay: new Date(dateNow.setDate(dateNow.getDate() + 1)),
+      leftDay: new Date(dateNow.setUTCDate(dateNow.getUTCDate() + 1)),
+      rightDay: new Date(dateNow.setUTCDate(dateNow.getUTCDate() + 1)),
     };
     const dateThreeDay = {
-      leftDay: new Date(dateNow.setDate(dateNow.getDate() + 1)),
-      rightDay: new Date(dateNow.setDate(dateNow.getDate() + 1)),
+      leftDay: new Date(dateNow.setUTCDate(dateNow.getUTCDate() + 1)),
+      rightDay: new Date(dateNow.setUTCDate(dateNow.getUTCDate() + 1)),
     };
 
     const [subscriptionsOneDay, subscriptionsThreeDay] = await Promise.all([

@@ -53,7 +53,7 @@ export class SubscriptionService implements ISubscriptionService {
       throw new BadRequestException('Такая подписка уже существует.');
     }
 
-    const nextPaymentAt = await this.paymentService.updateNextPaymentAt(
+    const nextPaymentAt = this.paymentService.updateNextPaymentAt(
       dto.last_payment_at,
       dto.count,
       dto.period,
@@ -110,7 +110,7 @@ export class SubscriptionService implements ISubscriptionService {
     }
 
     if (dto.count || dto.period) {
-      data.next_payment_at = await this.paymentService.updateNextPaymentAt(
+      data.next_payment_at = this.paymentService.updateNextPaymentAt(
         subscription.last_payment_at,
         dto.count ?? subscription.count,
         dto.period ?? subscription.period,

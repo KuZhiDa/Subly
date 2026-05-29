@@ -8,6 +8,6 @@ import { QueueModule } from '../../infrastructure/queue/queue.module';
 @Module({
   controllers: [SubscriptionController],
   providers: [SubscriptionService, PaymentService, CategoriesService],
-  exports: [SubscriptionService],
+  exports: [SubscriptionService, PaymentService],
 })
 export class SubscriptionModule {}

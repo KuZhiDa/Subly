@@ -36,11 +36,7 @@ export class PaymentService implements IPaymentService {
     });
   }
 
-  async updateNextPaymentAt(
-    lastPaymentAt: Date,
-    count: number,
-    period: Period,
-  ) {
+  updateNextPaymentAt(lastPaymentAt: Date, count: number, period: Period) {
     const next_payment_at: Date = new Date(lastPaymentAt);
     return new Date(PeriodInSetFunc[period](next_payment_at, count ?? 1));
   }
@@ -83,7 +79,7 @@ export class PaymentService implements IPaymentService {
       dto.last_payment_at,
     );
 
-    const nextPaymentAt = await this.updateNextPaymentAt(
+    const nextPaymentAt = this.updateNextPaymentAt(
       dto.last_payment_at,
       dto.count ?? subscription.count,
       dto.period ?? subscription.period,

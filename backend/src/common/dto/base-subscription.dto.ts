@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -6,9 +7,14 @@ import {
   IsInt,
   IsNumber,
   IsOptional,
+  Max,
+  MaxDate,
   Min,
+  Validate,
+  ValidateIf,
 } from 'class-validator';
 import { Period } from 'src/infrastructure/database/generated/prisma/enums';
+import { LastPaymentAtValidation } from '../validator/last-payment-at.validator';
 
 export class BaseSubscriptionDto {
   @ApiProperty({
@@ -28,6 +34,7 @@ export class BaseSubscriptionDto {
   })
   @Type(() => Date)
   @IsDate({ message: 'Поле last_payment_at должно быть датой.' })
+  @Validate(LastPaymentAtValidation)
   last_payment_at: Date;
 
   @ApiProperty({
