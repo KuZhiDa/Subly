@@ -9,18 +9,15 @@ import {
 import { ISubscriptionService } from './subscription.service.interface';
 import {
   CreateSubscriptionDto,
+  QueryDto,
   UpdateSubscriptionDto,
 } from '../../presentation/dto/subscription.dto';
 import { PrismaService } from 'src/infrastructure/database/prisma.service';
-import {
-  Login,
-  StatusSubscription,
-} from 'src/infrastructure/database/generated/prisma/client';
+import { Login } from 'src/infrastructure/database/generated/prisma/client';
 import { PaymentService } from '../payment/payment.service';
 import { CategoriesService } from '../categories/categories.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
+import { StructureInTable } from 'src/common/const/get-structure';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService {
@@ -56,7 +53,7 @@ export class SubscriptionService implements ISubscriptionService {
       throw new BadRequestException('Такая подписка уже существует.');
     }
 
-    const nextPaymentAt = await this.paymentService.updateNextPaymentAt(
+    const nextPaymentAt = this.paymentService.updateNextPaymentAt(
       dto.last_payment_at,
       dto.count,
       dto.period,
@@ -113,7 +110,7 @@ export class SubscriptionService implements ISubscriptionService {
     }
 
     if (dto.count || dto.period) {
-      data.next_payment_at = await this.paymentService.updateNextPaymentAt(
+      data.next_payment_at = this.paymentService.updateNextPaymentAt(
         subscription.last_payment_at,
         dto.count ?? subscription.count,
         dto.period ?? subscription.period,
@@ -186,10 +183,36 @@ export class SubscriptionService implements ISubscriptionService {
     });
   }
 
-  async getAll(userId: string) {
+  async getAll(userId: string, query: QueryDto) {
+    let where: any = { AND: [] };
+
+    if (query.filters?.length) {
+      const roads = await Promise.all(
+        query.filters.map((q) => {
+          const param = q.constant?.length
+            ? { [q.filterColumn]: { in: q.constant } }
+            : q.value?.length
+              ? {
+                  OR: q.value.map((v) => ({
+                    [q.filterColumn]: { contains: v, mode: 'insensitive' },
+                  })),
+                }
+              : null;
+
+          if (param === null) {
+            throw new BadRequestException('Пустой запрос.');
+          }
+
+          return this.createRoad(q.filterColumn, param);
+        }),
+      );
+      where.AND.push(...roads);
+    }
+
     const subscriptions = await this.prisma.subscription.findMany({
-      where: { user_id: userId, deleted_at: null },
+      where: { ...where, user_id: userId, deleted_at: null },
       include: { account: true, categories: true },
+      orderBy: query.sorts?.map((s) => ({ [s.sortsColumn]: s.by })),
     });
 
     return subscriptions?.map((s) => ({
@@ -198,6 +221,30 @@ export class SubscriptionService implements ISubscriptionService {
       last_payment_at: s.last_payment_at,
       next_payment_at: s.next_payment_at,
     }));
+  }
+
+  async createRoad(column: string, param: any) {
+    const { connection, relations } = StructureInTable[column];
+
+    const tables = connection.split('.');
+    const type = relations.split('.');
+
+    const road = tables.reduceRight(
+      (acc, t, i) => {
+        const isMany = type[i] === 'many';
+        const isLast = i === tables.length - 1;
+
+        if (isMany) {
+          return { [t]: { some: { ...acc } } };
+        }
+        if (isLast) {
+          return { ...acc };
+        }
+        return { [t]: { ...acc } };
+      },
+      { ...param },
+    );
+    return road;
   }
 
   async getOne(userId: string, subscriptionId: string) {

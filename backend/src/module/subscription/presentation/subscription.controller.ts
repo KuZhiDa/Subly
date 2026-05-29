@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { SubscriptionService } from '../uses-cases/subscription/subscription.service';
@@ -14,6 +15,7 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,6 +23,7 @@ import {
   CategoriesDto,
   CreatePaidDto,
   CreateSubscriptionDto,
+  QueryDto,
   UpdateSubscriptionDto,
 } from './dto/subscription.dto';
 import { CurrentUser } from 'src/common/decorator/user.decorator';
@@ -42,8 +45,8 @@ export class SubscriptionController {
   @ApiOperation({
     summary: 'Получение всех подписок пользователя.',
   })
-  async getAll(@CurrentUser('id') id: string) {
-    return await this.subscriptionService.getAll(id);
+  async getAll(@CurrentUser('id') id: string, @Query() query: QueryDto) {
+    return await this.subscriptionService.getAll(id, query);
   }
 
   @Get('categories-all')

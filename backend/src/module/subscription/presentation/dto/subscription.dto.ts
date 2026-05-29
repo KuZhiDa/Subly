@@ -4,9 +4,12 @@ import {
   IntersectionType,
   PartialType,
 } from '@nestjs/swagger';
+import { PrismaClient } from '@prisma/client/extension';
+import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsEnum,
+  IsIn,
   IsOptional,
   IsString,
   IsUrl,
@@ -17,7 +20,9 @@ import { BaseSubscriptionDto } from 'src/common/dto/base-subscription.dto';
 import {
   Category,
   Login,
+  StatusSubscription,
 } from 'src/infrastructure/database/generated/prisma/enums';
+import { PrismaService } from 'src/infrastructure/database/prisma.service';
 
 export class CategoriesDto {
   @ApiProperty({
@@ -78,3 +83,54 @@ export class CreateSubscriptionDto extends IntersectionType(
 export class UpdateSubscriptionDto extends PartialType(CreateSubscriptionDto) {}
 
 export class CreatePaidDto extends PartialType(BaseSubscriptionDto) {}
+
+class FiltersDto {
+  @ApiProperty({ description: 'Столбец фильтрации.', type: String })
+  filterColumn: string;
+
+  @ApiPropertyOptional({
+    description: 'Фильтрация по константному значению.',
+    type: [String],
+  })
+  constant?: (StatusSubscription | Category)[];
+
+  @ApiPropertyOptional({
+    description: 'Фильтрация по части строки.',
+    type: [String],
+  })
+  value?: string[];
+}
+
+class SortsDto {
+  @ApiProperty({ description: 'Столбец сортировки.', type: String })
+  sortsColumn: string;
+
+  @ApiPropertyOptional({ description: 'Порядок сортировки.', type: String })
+  by?: 'asc' | 'desc' = 'asc';
+}
+
+export class QueryDto {
+  @ApiPropertyOptional({ description: 'Фильтрация.', type: [FiltersDto] })
+  @Transform(({ value }) => {
+    const data = Array.isArray(value) ? value : [value];
+
+    const result = data.map((d) => {
+      return JSON.parse(d);
+    });
+
+    return result;
+  })
+  filters?: FiltersDto[];
+
+  @ApiPropertyOptional({ description: 'Сортировка.', type: [SortsDto] })
+  @Transform(({ value }) => {
+    const data = Array.isArray(value) ? value : [value];
+
+    const result = data.map((d) => {
+      return JSON.parse(d);
+    });
+
+    return result;
+  })
+  sorts?: SortsDto[];
+}

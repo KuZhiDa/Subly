@@ -13,6 +13,7 @@ import { NotificationModule } from './module/notification/notification.module';
 import { QueueModule } from './infrastructure/queue/queue.module';
 import { MonitorModule } from './infrastructure/monitor/monitor.module';
 import { EmailModule } from './infrastructure/email/mailer.module';
+import { AnalyticsModule } from './module/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { EmailModule } from './infrastructure/email/mailer.module';
     NotificationModule,
     MonitorModule,
     EmailModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule {}

@@ -23,7 +23,10 @@ export class App {
   private appConfig() {
     this.app.setGlobalPrefix(this.prefix);
     this.app.useGlobalPipes(
-      new ValidationPipe({ transform: true, whitelist: true }),
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
     );
     this.app.use(cookieParser());
     return this;
@@ -46,7 +49,8 @@ export class App {
 
   private async runApp() {
     this.app.listen(this.port, () => {
-      console.log(`http://localhost:${this.port}/${this.prefix}`);
+      console.log(`server: http://localhost:${this.port}/${this.prefix}`);
+      console.log(`swagger: http://localhost:${this.port}/${this.prefix}/docs`);
     });
     return this;
   }
