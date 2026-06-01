@@ -1,0 +1,24 @@
+.app-header {
+	background-color: rgb(85, 85, 85);
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: 0px 20px 0px 20px;
+	border-bottom: 2px solid rgba(255, 162, 75, 0.868);
+}
+
+.app-img {
+	width: 30px;
+	height: 50px;
+}
+
+.app-p {
+	font-size: xx-large;
+	color: rgb(255, 255, 255);
+}
+
+.app-header-div {
+	display: flex;
+	align-items: baseline;
+	height: 30px;
+}
