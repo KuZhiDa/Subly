@@ -4,11 +4,11 @@ import Main from './components/main'
 import './styles/app.css'
 
 function App() {
-	const currentPage = 'main'
+	const currentPage = 'register'
 	return (
 		<>
 			<Header currentPage={currentPage} />
-			<Main />
+			<Main currentPage={currentPage} />
 		</>
 	)
 }

@@ -2,11 +2,12 @@ import '../styles/components/main.css'
 import TableInfo from './table-info'
 import '../styles/components/table-info.css'
 
-const Main = () => {
+const Main = props => {
+	const { currentPage } = props
 	return (
 		<>
 			<main>
-				<TableInfo />
+				<TableInfo currentPage={currentPage} />
 			</main>
 		</>
 	)

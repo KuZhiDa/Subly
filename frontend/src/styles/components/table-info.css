@@ -11,6 +11,12 @@
 	gap: 10px;
 }
 
+.container-forms {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
 .text-bold {
 	color: #333333;
 	font-size: xx-large;
@@ -35,4 +41,24 @@
 
 .text-under-table {
 	font-size: x-large;
+}
+
+.container-label {
+	position: relative;
+}
+
+input {
+	background: #f8f8f8;
+	padding: 10px;
+	border-radius: 11px;
+	width: 200px;
+}
+
+label {
+	position: absolute;
+
+	top: -10px;
+	left: 10px;
+	background: #f8f8f8;
+	padding: 0 5px;
 }
