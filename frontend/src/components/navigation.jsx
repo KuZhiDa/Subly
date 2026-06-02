@@ -7,7 +7,7 @@ const Navigation = props => {
 			<ul className='list'>
 				{page !== 'login' && (
 					<li>
-						<a className='road' href=''>
+						<a className='road' href='/login'>
 							Авторизация
 						</a>
 					</li>
