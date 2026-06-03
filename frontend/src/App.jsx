@@ -4,7 +4,7 @@ import Main from './components/main'
 import './styles/app.css'
 
 function App() {
-	const currentPage = 'register'
+	let currentPage = 'register'
 	return (
 		<>
 			<Header currentPage={currentPage} />

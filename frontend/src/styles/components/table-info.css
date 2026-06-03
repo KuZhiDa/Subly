@@ -1,6 +1,6 @@
 .container-table {
 	background-color: #f8f8f8;
-	border-radius: 10%;
+	border-radius: 50px;
 	height: 350px;
 	width: 550px;
 	display: flex;
@@ -9,12 +9,6 @@
 	padding: 30px 10px 30px 10px;
 	box-shadow: 0 0 100px rgb(255, 255, 255);
 	gap: 10px;
-}
-
-.container-forms {
-	display: flex;
-	flex-direction: column;
-	gap: 40px;
 }
 
 .text-bold {
@@ -41,24 +35,4 @@
 
 .text-under-table {
 	font-size: x-large;
-}
-
-.container-label {
-	position: relative;
-}
-
-input {
-	background: #f8f8f8;
-	padding: 10px;
-	border-radius: 11px;
-	width: 200px;
-}
-
-label {
-	position: absolute;
-
-	top: -10px;
-	left: 10px;
-	background: #f8f8f8;
-	padding: 0 5px;
 }

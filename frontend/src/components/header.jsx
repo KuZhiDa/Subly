@@ -3,7 +3,7 @@ import '../styles/components/header.css'
 import Brand from './brand'
 
 const Header = props => {
-	const { currentPage } = props
+	let { currentPage } = props
 	return (
 		<header>
 			<Brand />
