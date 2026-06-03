@@ -1,0 +1,10 @@
+.list {
+	display: flex;
+	gap: 40px;
+	list-style-type: none;
+}
+
+.road {
+	color: #ffffff;
+	font-size: x-large;
+}
