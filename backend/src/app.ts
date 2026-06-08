@@ -4,6 +4,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import { METHODS } from 'node:http';
 
 export class App {
   private readonly app: INestApplication;
@@ -29,6 +30,15 @@ export class App {
       }),
     );
     this.app.use(cookieParser());
+    this.app.enableCors({
+      origin: ['http://localhost:5173'],
+      methods: ['GET', 'POST'],
+      allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'Access-Control-Allow-Origin',
+      ],
+    });
     return this;
   }
 

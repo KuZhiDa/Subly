@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import Header from './components/header'
-import Main from './components/main'
-import './styles/app.css'
+import { useEffect, useState } from 'react'
+import Header from './components/organisms/header/header'
+import Main from './components/organisms/main/main'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
-	let currentPage = 'register'
 	return (
 		<>
-			<Header currentPage={currentPage} />
-			<Main currentPage={currentPage} />
+			<Header />
+			<Routes>
+				<Route path='*' element={<Main />} />
+			</Routes>
 		</>
 	)
 }

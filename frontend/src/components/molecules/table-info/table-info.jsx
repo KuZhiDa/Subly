@@ -1,12 +1,13 @@
-import Form from './form/form'
+import Form from '../form/form'
+import './table-info.css'
+import { useLocation } from 'react-router-dom'
 
 const TableInfo = props => {
-	const { currentPage } = props
-
+	const location = useLocation()
 	return (
 		<>
 			<div className='container-table'>
-				{currentPage === 'main' ? (
+				{location.pathname === '/main' ? (
 					<>
 						<p className='text-bold'>
 							Это веб-приложение предназначено для вашей финансовой
@@ -19,11 +20,11 @@ const TableInfo = props => {
 					</>
 				) : (
 					<>
-						<Form currentPage={currentPage} />
+						<Form />
 					</>
 				)}
 			</div>
-			{currentPage === 'main' && (
+			{location.pathname === '/main' && (
 				<div className='container-text-under-table'>
 					<p className='text-under-table'>
 						<spain className='text-under-table-register'>Регистрируйся,</spain>{' '}

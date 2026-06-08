@@ -1,4 +1,4 @@
-import '../styles/components/input.css'
+import './input.css'
 
 const Input = props => {
 	console.log(props)

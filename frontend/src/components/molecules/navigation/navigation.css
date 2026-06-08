@@ -1,0 +1,19 @@
+.list {
+	display: flex;
+	gap: 40px;
+	list-style-type: none;
+}
+
+.road {
+	color: #ffffff;
+	font-size: x-large;
+	background: none;
+	border: none;
+	padding: 0px;
+	transition: 0.5ms;
+	text-decoration-line: none;
+}
+
+.road:hover {
+	color: gray;
+}
