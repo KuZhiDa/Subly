@@ -1,0 +1,11 @@
+.text-bold {
+	color: #333333;
+	font-size: xx-large;
+	text-align: right;
+	font-weight: bold;
+}
+
+.text-normal {
+	color: #333333;
+	text-align: left;
+}

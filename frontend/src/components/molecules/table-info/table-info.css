@@ -10,29 +10,3 @@
 	box-shadow: 0 0 100px rgb(255, 255, 255);
 	gap: 10px;
 }
-
-.text-bold {
-	color: #333333;
-	font-size: xx-large;
-	text-align: right;
-	font-weight: bold;
-}
-
-.text-normal {
-	color: #333333;
-	text-align: left;
-}
-
-.container-text-under-table {
-	display: flex;
-}
-
-.text-under-table-register {
-	background-color: #ffbf00;
-	text-align: center;
-	border-radius: 5%;
-}
-
-.text-under-table {
-	font-size: x-large;
-}

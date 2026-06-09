@@ -1,0 +1,13 @@
+.container-text {
+	display: flex;
+}
+
+.text-allot {
+	background-color: #ffbf00;
+	text-align: center;
+	border-radius: 5%;
+}
+
+.text-division {
+	font-size: x-large;
+}

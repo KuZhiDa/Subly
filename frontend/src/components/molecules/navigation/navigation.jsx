@@ -1,26 +1,15 @@
 import { useState } from 'react'
 import './navigation.css'
-import { Link, Router } from 'react-router-dom'
+import { Link, Outlet, Router } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
+import line from '../../../assets/icons8-линии-захвата-48.png'
+
 const Navigation = () => {
 	const location = useLocation()
 	return (
 		<>
 			<ul className='list'>
-				{location.pathname !== '/login' && (
-					<li>
-						<Link className='road' to='/login'>
-							Авторизация
-						</Link>
-					</li>
-				)}
-				{location.pathname !== '/register' && (
-					<li>
-						<Link className='road' to='/register'>
-							Регистрация
-						</Link>
-					</li>
-				)}
+				<Outlet />
 			</ul>
 		</>
 	)

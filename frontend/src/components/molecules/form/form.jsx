@@ -2,14 +2,15 @@ import './form.css'
 import Input from '../../atoms/input/input'
 import Button from '../../atoms/button/button'
 import google from '../../../assets/Google__G__logo.svg.png'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const Form = () => {
-	const location = useLocation()
+const Form = props => {
+	const { purpose } = props
+	const navigate = useNavigate()
 
 	const requestAuth = async body => {
 		const res = await fetch(
-			location.pathname === '/register'
+			purpose === 'register'
 				? 'http://localhost:5000/api/auth/register'
 				: 'http://localhost:5000/api/auth/login',
 			{
@@ -20,14 +21,14 @@ const Form = () => {
 				body,
 			},
 		)
+		const answer = await res.json()
 		if (!res.ok) {
-			const message = (await res.json()).message
-			alert(Array.isArray(message) ? message[0] : message)
+			alert(Array.isArray(answer.message) ? answer.message[0] : answer.message)
 		}
 		if (res.ok) {
-			alert(
-				`Успешная ${location.pathname === '/login' ? 'авторизация' : 'регистрация'}!`,
-			)
+			purpose === 'register'
+				? navigate('/login')
+				: navigate(`/dashboard?user=${answer.accessToken}`)
 		}
 	}
 
@@ -48,9 +49,9 @@ const Form = () => {
 
 	return (
 		<>
-			<form className='container-form' onSubmit={onSubmit}>
+			<form className='container-form' onSubmit={onSubmit} key={purpose}>
 				<h2 className='title-form'>
-					{location.pathname === '/register' ? 'Регистрация' : 'Авторизация'}
+					{purpose === 'register' ? 'Регистрация' : 'Авторизация'}
 				</h2>
 				<div className='labels'>
 					<Input
@@ -74,7 +75,7 @@ const Form = () => {
 						Пароль
 					</Input>
 
-					{location.pathname === '/register' && (
+					{purpose === 'register' && (
 						<Input
 							id='twoFa'
 							name='twoFa'
@@ -87,11 +88,9 @@ const Form = () => {
 				</div>
 				<div className='buttons'>
 					<Button type='submit' classButton='login-register-button'>
-						{location.pathname === '/register'
-							? 'Зарегистрироваться'
-							: 'Авторизоваться'}
+						{purpose === 'register' ? 'Зарегистрироваться' : 'Авторизоваться'}
 					</Button>
-					{location.pathname === '/login' && (
+					{purpose === 'login' && (
 						<>
 							<Button
 								type='button'

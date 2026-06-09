@@ -22,3 +22,29 @@
 	width: 20px;
 	margin-right: 10px;
 }
+
+.menu-button {
+	background: none;
+	border: none;
+}
+
+.menu-button:hover {
+	background-color: black;
+}
+
+.menu-button:active {
+	background: gray;
+}
+
+.logout-button {
+	background: none;
+	border: none;
+	color: white;
+	font-size: large;
+	margin: 0;
+	padding: 0;
+}
+
+.logout-button:hover {
+	color: gray;
+}

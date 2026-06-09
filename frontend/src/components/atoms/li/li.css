@@ -1,0 +1,13 @@
+.road {
+	color: #ffffff;
+	font-size: x-large;
+	background: none;
+	border: none;
+	padding: 0px;
+
+	text-decoration-line: none;
+}
+
+.road:hover {
+	color: gray;
+}
