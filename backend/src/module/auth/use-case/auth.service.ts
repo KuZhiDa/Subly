@@ -69,8 +69,8 @@ export class AuthService implements IAuthService {
 
   async genTokens(data: any) {
     const [accessToken, refreshToken] = await Promise.all([
-      this.secretService.genJwtTokenAccess({ id: data.id, email: data.email }),
-      this.secretService.genJwtTokenRefresh({ id: data.id, email: data.email }),
+      this.secretService.genJwtTokenAccess({ ...data }),
+      this.secretService.genJwtTokenRefresh({ ...data }),
     ]);
 
     await this.refreshSave(data.id, refreshToken);
@@ -112,7 +112,7 @@ export class AuthService implements IAuthService {
       return { id, email };
     } catch (e: any) {
       if (e.name === 'TokenExpiredError' || e.name === 'JsonWebTokenError') {
-        await this.deleteTokenRefresh(token);
+        await this.logoutUser(token);
       }
       throw new UnauthorizedException('Ошибка токена.');
     }

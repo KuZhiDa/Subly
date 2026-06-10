@@ -12,13 +12,10 @@
 	display: block;
 	background-color: #2f2f32;
 	width: 120px;
+	text-align: center;
 }
 
 .container-menu {
+	width: 100px;
 	position: relative;
-}
-
-.logo-arrow {
-	height: 10px;
-	width: 15px;
 }

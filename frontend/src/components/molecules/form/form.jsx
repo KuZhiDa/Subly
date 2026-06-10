@@ -2,25 +2,25 @@ import './form.css'
 import Input from '../../atoms/input/input'
 import Button from '../../atoms/button/button'
 import google from '../../../assets/Google__G__logo.svg.png'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { FetchRequest } from '../../../api/fetch'
 
 const Form = props => {
 	const { purpose } = props
 	const navigate = useNavigate()
 
+	useEffect(() => {
+		const token = localStorage.getItem('token')
+		if (token) {
+			navigate(`/wait?token=${token}`)
+		}
+	}, [])
+
 	const requestAuth = async body => {
-		const res = await fetch(
-			purpose === 'register'
-				? 'http://localhost:5000/api/auth/register'
-				: 'http://localhost:5000/api/auth/login',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body,
-			},
-		)
+		const res = await (purpose === 'login'
+			? FetchRequest['login'](body)
+			: FetchRequest['register'](body))
 		const answer = await res.json()
 		if (!res.ok) {
 			alert(Array.isArray(answer.message) ? answer.message[0] : answer.message)
@@ -28,7 +28,7 @@ const Form = props => {
 		if (res.ok) {
 			purpose === 'register'
 				? navigate('/login')
-				: navigate(`/dashboard?user=${answer.accessToken}`)
+				: navigate(`/wait?token=${answer.accessToken}`)
 		}
 	}
 
@@ -39,12 +39,11 @@ const Form = props => {
 	const onSubmit = event => {
 		event.preventDefault()
 		const target = event.target
-		const body = JSON.stringify({
+		requestAuth({
 			email: target.login.value,
 			password: target.password.value,
 			is_2fa_auth: target.twoFa?.checked,
 		})
-		requestAuth(body)
 	}
 
 	return (

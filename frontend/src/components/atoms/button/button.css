@@ -26,14 +26,17 @@
 .menu-button {
 	background: none;
 	border: none;
+	margin-left: 25px;
+	border-radius: 50%;
+	transition: 1ms;
 }
 
 .menu-button:hover {
-	background-color: black;
+	background-color: rgb(79, 79, 79);
 }
 
 .menu-button:active {
-	background: gray;
+	background-color: gray;
 }
 
 .logout-button {
@@ -43,8 +46,9 @@
 	font-size: large;
 	margin: 0;
 	padding: 0;
+	color: red;
 }
 
 .logout-button:hover {
-	color: gray;
+	color: rgba(255, 0, 0, 0.579);
 }

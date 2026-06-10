@@ -84,7 +84,7 @@ export class AuthController {
       sameSite: 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    res.redirect(`http://localhost:5173/dashboard/?user=${accessToken}`);
+    res.redirect(`http://localhost:5173/wait?token=${accessToken}`);
   }
 
   @Put('refresh')

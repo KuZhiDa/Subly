@@ -1,7 +1,6 @@
 import './input.css'
 
 const Input = props => {
-	console.log(props)
 	const { id, name, type, children, classContainer, classLabel, classInput } =
 		props
 	return (
