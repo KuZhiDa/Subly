@@ -23,6 +23,7 @@ export class UserService implements IUserService {
     }
 
     return {
+      id: user.id,
       email: user.email,
       is2FaAuth: user.is_2fa_auth,
     };

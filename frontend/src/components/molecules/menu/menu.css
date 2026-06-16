@@ -1,0 +1,21 @@
+.menu {
+	display: none;
+	position: absolute;
+	list-style-type: none;
+}
+
+.menu.active {
+	top: 100%;
+	margin: 0;
+	padding: 0;
+	margin-top: 23px;
+	display: block;
+	background-color: #2f2f32;
+	width: 120px;
+	text-align: center;
+}
+
+.container-menu {
+	width: 100px;
+	position: relative;
+}

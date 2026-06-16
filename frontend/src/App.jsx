@@ -1,15 +1,23 @@
-import { useState } from 'react'
-import Header from './components/header'
-import Main from './components/main'
-import './styles/app.css'
+import { useEffect, useState } from 'react'
+import Header from './components/organisms/header/header'
+import Main from './components/organisms/main/main'
+import { Routes, Route } from 'react-router-dom'
+import Wait from './components/molecules/wait/wait'
 
 function App() {
-	let currentPage = 'register'
 	return (
-		<>
-			<Header currentPage={currentPage} />
-			<Main currentPage={currentPage} />
-		</>
+		<Routes>
+			<Route path='/wait' element={<Wait />} />
+			<Route
+				path='*'
+				element={
+					<>
+						<Header />
+						<Main />
+					</>
+				}
+			/>
+		</Routes>
 	)
 }
 
