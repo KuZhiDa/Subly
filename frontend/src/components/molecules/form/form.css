@@ -1,22 +1,9 @@
 .container-form {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	gap: 40px;
 }
-
 .title-form {
 	text-align: center;
-}
-
-.buttons {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	gap: 5px;
-}
-
-.labels {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
 }

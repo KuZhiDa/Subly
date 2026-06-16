@@ -6,20 +6,18 @@ import Wait from './components/molecules/wait/wait'
 
 function App() {
 	return (
-		<>
-			<Routes>
-				<Route path='/wait' element={<Wait />} />
-				<Route
-					path='*'
-					element={
-						<>
-							<Header />
-							<Main />
-						</>
-					}
-				/>
-			</Routes>
-		</>
+		<Routes>
+			<Route path='/wait' element={<Wait />} />
+			<Route
+				path='*'
+				element={
+					<>
+						<Header />
+						<Main />
+					</>
+				}
+			/>
+		</Routes>
 	)
 }
 

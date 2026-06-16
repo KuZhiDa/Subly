@@ -1,28 +1,44 @@
-import { useNavigate } from 'react-router-dom'
-import './wait.css'
-import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import { FetchRequest } from '../../../api/fetch'
+import './wait.css'
 import { useGetUser } from '../../../use/useGetUser'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import Form from '../form/form'
+import Input from '../../atoms/input/input'
 
 const Wait = () => {
+	const getUser = useGetUser()
 	const navigate = useNavigate()
 	const [searchParams] = useSearchParams()
-	const getUser = useGetUser()
 
 	useEffect(() => {
-		const handleAuth = async () => {
-			const token = searchParams.get('token')
-			localStorage.setItem('token', token)
-			const result = await getUser()
-			if (result === null) {
-				navigate('/login')
-				return null
-			}
-			navigate(`/user/${result.id}`)
+		const tokenInParams = searchParams.get('token')
+		if (tokenInParams) {
+			localStorage.setItem('token', tokenInParams)
 		}
-		handleAuth()
-	}, [searchParams])
+		const token = localStorage.getItem('token')
+		if (!token) {
+			navigate('/login')
+			return
+		}
+
+		getUser()
+			.then(data => {
+				if (!data) {
+					localStorage.removeItem('token')
+					navigate('/login')
+					return
+				}
+				if (data.is2FaAuth) {
+					navigate(`/2FaAuth/${data.email}`)
+					return
+				}
+				navigate(`/profile/${data.id}`)
+				return
+			})
+			.catch(e => {
+				console.error(e)
+			})
+	}, [])
 
 	return (
 		<>

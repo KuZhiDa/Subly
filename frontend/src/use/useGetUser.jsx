@@ -11,7 +11,7 @@ export function useGetUser() {
 		const answer = await res.json()
 
 		if (res.ok) {
-			return { id: answer.id, email: answer.email }
+			return answer
 		}
 		if (answer.message === 'Unauthorized') {
 			const newToken = await refreshAccess(token)
@@ -20,12 +20,14 @@ export function useGetUser() {
 				const retryRes = await FetchRequest['getUser'](newToken)
 				const retryAnswer = await retryRes.json()
 				if (retryRes.ok) {
-					return { id: retryAnswer.id, email: retryAnswer.email }
+					return retryAnswer
 				}
+				console.error(retryAnswer.message)
 			}
-			return null
+			return
 		}
-		return null
+		console.error(answer.message)
+		return
 	}
 	return getUser
 }

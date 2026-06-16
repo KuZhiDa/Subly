@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../use-case/auth.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { Cookies } from 'src/common/decorator/cookie.decorator';
 
@@ -51,8 +51,6 @@ export class AuthController {
     return { accessToken };
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
   @Delete('logout')
   @ApiOperation({
     summary: 'Выход из аккаунта.',

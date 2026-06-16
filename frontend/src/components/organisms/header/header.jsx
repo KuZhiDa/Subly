@@ -29,7 +29,7 @@ const Header = () => {
 						element={<Li purpose='/login'>Авторизация</Li>}
 					></Route>
 				</Route>
-				<Route path='/user/*' element={<Menu />} />
+				<Route path='/profile/:id/*' element={<Menu />} />
 			</Routes>
 		</header>
 	)

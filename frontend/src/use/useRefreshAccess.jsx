@@ -11,7 +11,8 @@ export function useRefreshAccess() {
 		if (res.ok && answer.accessToken) {
 			return answer.accessToken
 		}
-		return null
+		console.error(answer.message)
+		return
 	}
 
 	return refreshAccess

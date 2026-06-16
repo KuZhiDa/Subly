@@ -1,9 +1,11 @@
 import './main.css'
 import TableInfo from '../../molecules/table-info/table-info'
 import { Route, Routes } from 'react-router-dom'
-import Form from '../../molecules/form/form'
+import Auth from '../auth/auth'
 import TextInTable from '../../atoms/text/table/in/in'
 import Profile from '../../molecules/profile/profile'
+import Wait from '../../molecules/wait/wait'
+import TwoFaAuth from '../2FaAuth/2FaAuth'
 
 const Main = () => {
 	return (
@@ -19,10 +21,11 @@ const Main = () => {
 								</>
 							}
 						/>
-						<Route path='/login' element={<Form purpose='login' />} />
-						<Route path='/register' element={<Form purpose='register' />} />
+						<Route path='/login' element={<Auth purpose='login' />} />
+						<Route path='/register' element={<Auth purpose='register' />} />
+						<Route path='/2FaAuth/:email' element={<TwoFaAuth />} />
 					</Route>
-					<Route path='/user/:id' element={<Profile />} />
+					<Route path='/profile/:id/*' element={<Profile />} />
 				</Routes>
 			</main>
 		</>
